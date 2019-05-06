@@ -26,6 +26,7 @@ class UserSearchViewController: UIViewController {
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.backgroundColor = .red
+        $0.register(Reusable.userSearchCell)
     }
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
@@ -36,6 +37,18 @@ class UserSearchViewController: UIViewController {
         view.backgroundColor = .white
         
         setupSubviews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionView.dataSource = self
+        collectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK:- Layout methods
@@ -58,5 +71,33 @@ class UserSearchViewController: UIViewController {
         spinner.centerInSuperview()
     }
     
+}
+
+extension UserSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
+        
+        cell.backgroundColor = .yellow
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let guide = view.safeAreaLayoutGuide
+        let width: CGFloat = guide.layoutFrame.width - Metric.edgeInset * 2
+        let height: CGFloat = Metric.profileImageSize
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return Metric.edgeInset
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: Metric.edgeInset, left: 0, bottom: Metric.edgeInset, right: 0)
+    }
 }
 
