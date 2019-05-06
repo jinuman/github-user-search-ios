@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import ReusableKit
 
 struct Metric {
     static let profileImageSize: CGFloat = 50
     static let profileSpacing: CGFloat = 5
     static let contentSpacing: CGFloat = 3
     static let edgeInset: CGFloat = 25
+}
+
+enum Reusable {
+    static let userSearchCell = ReusableCell<UserSearchCell>()
 }

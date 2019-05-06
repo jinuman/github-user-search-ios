@@ -26,6 +26,7 @@ class UserSearchViewController: UIViewController {
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.backgroundColor = .red
+        $0.register(Reusable.userSearchCell)
     }
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
@@ -36,6 +37,12 @@ class UserSearchViewController: UIViewController {
         view.backgroundColor = .white
         
         setupSubviews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionView.dataSource = self
     }
     
     // MARK:- Layout methods
@@ -58,5 +65,18 @@ class UserSearchViewController: UIViewController {
         spinner.centerInSuperview()
     }
     
+}
+
+extension UserSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
+        
+        cell.backgroundColor = .yellow
+        return cell
+    }
 }
 

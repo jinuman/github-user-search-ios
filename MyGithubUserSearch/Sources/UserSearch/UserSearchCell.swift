@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Then
 
 class UserSearchCell: UICollectionViewCell {
     
