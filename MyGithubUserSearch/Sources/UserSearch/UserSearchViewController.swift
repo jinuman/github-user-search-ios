@@ -108,6 +108,17 @@ extension UserSearchViewController: View {
             .map { $0.users }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+        
+        // Misc.
+        // Scroll to top if previous search text was scrolled
+        userSearchBar.rx.text
+            .withLatestFrom(collectionView.rx.contentOffset)
+            .filter { $0.y > 0 }
+            .subscribe({ [weak self] _ in
+                guard let self = self else { return }
+                self.collectionView.contentOffset.y = 0
+            })
+            .disposed(by: disposeBag)
     }
 }
 
