@@ -81,11 +81,25 @@ class UserSearchViewController: UIViewController {
 
 extension UserSearchViewController: View {
     func bind(reactor: UserSearchReactor) {
+        
         // Action binding: View -> Reactor(Action)
         userSearchBar.rx.text
             .distinctUntilChanged()
             .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .map { Reactor.Action.updateQuery($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.contentOffset
+            .filter { [weak self] (offset) -> Bool in
+                guard let self = self else { return false }
+                
+                let scrollPosition: CGFloat = offset.y
+                let contentHeight: CGFloat = self.collectionView.contentSize.height
+                
+                return scrollPosition > contentHeight - self.collectionView.bounds.height
+            }
+            .map { _ in Reactor.Action.loadNextPage }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         

@@ -53,7 +53,7 @@ class GithubService {
                     let nextPage = user.userItems.isEmpty
                         ? nil
                         : page + 1
-                    print("userItems: \(user.userItems.count), page: \(nextPage ?? -1)")
+                    print("userItems: \(user.userItems.count), nextPage: \(nextPage ?? -1)")
                     observer.onNext(([user], nextPage))
                     
                 } catch let jsonError {
