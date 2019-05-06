@@ -47,6 +47,10 @@ class UserSearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     // MARK:- Layout methods
     private func setupSubviews() {
         let navBar = navigationController?.navigationBar
