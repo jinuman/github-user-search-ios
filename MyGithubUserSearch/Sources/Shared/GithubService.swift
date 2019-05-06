@@ -25,6 +25,7 @@ class GithubService {
     static func search(with query: String?, page: Int) -> Observable<(repos: [User], nextPage: Int?)> {
         let emptyResult: ([User], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
+        print("current URL: \(url.absoluteString)")
         
         return Observable.create { observer in
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -52,7 +53,7 @@ class GithubService {
                     let nextPage = user.userItems.isEmpty
                         ? nil
                         : page + 1
-                    print("userItems: \(user.userItems.count), page: \(nextPage ?? -1)")
+                    print("userItems: \(user.userItems.count), nextPage: \(nextPage ?? -1)")
                     observer.onNext(([user], nextPage))
                     
                 } catch let jsonError {

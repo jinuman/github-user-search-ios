@@ -10,6 +10,7 @@ import UIKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 import Then
 
 class UserSearchViewController: UIViewController {
@@ -25,9 +26,16 @@ class UserSearchViewController: UIViewController {
     }
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
-        $0.backgroundColor = .red
+        $0.backgroundColor = .white
         $0.register(Reusable.userSearchCell)
     }
+    
+    private let dataSource = RxCollectionViewSectionedReloadDataSource<User>(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
+        
+        let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
+        cell.userItem = userItem
+        return cell
+    })
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
@@ -42,7 +50,6 @@ class UserSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        collectionView.dataSource = self
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -70,21 +77,53 @@ class UserSearchViewController: UIViewController {
         
         spinner.centerInSuperview()
     }
-    
 }
 
-extension UserSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
+extension UserSearchViewController: View {
+    func bind(reactor: UserSearchReactor) {
         
-        cell.backgroundColor = .yellow
-        return cell
+        // Action binding: View -> Reactor(Action)
+        userSearchBar.rx.text
+            .distinctUntilChanged()
+            .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .map { Reactor.Action.updateQuery($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.contentOffset
+            .filter { [weak self] (offset) -> Bool in
+                guard let self = self else { return false }
+                
+                let scrollPosition: CGFloat = offset.y
+                let contentHeight: CGFloat = self.collectionView.contentSize.height
+                
+                return scrollPosition > contentHeight - self.collectionView.bounds.height
+            }
+            .map { _ in Reactor.Action.loadNextPage }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        // State binding: Reactor(State) -> View
+        reactor.state
+            .map { $0.users }
+            .bind(to: collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        // Misc.
+        // Scroll to top if previous search text was scrolled
+        userSearchBar.rx.text
+            .withLatestFrom(collectionView.rx.contentOffset)
+            .filter { $0.y > 0 }
+            .subscribe({ [weak self] _ in
+                guard let self = self else { return }
+                self.collectionView.contentOffset.y = 0
+            })
+            .disposed(by: disposeBag)
     }
-    
+}
+
+// MARK:- Regarding collectionView
+extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let guide = view.safeAreaLayoutGuide
         let width: CGFloat = guide.layoutFrame.width - Metric.edgeInset * 2
