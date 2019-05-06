@@ -14,14 +14,17 @@ import Then
 
 class UserSearchViewController: UIViewController {
 
+    var disposeBag: DisposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        let observerble = GithubService.search(with: "vingle", page: 0)
+        _ = GithubService.search(with: "vingle", page: 0)
             .subscribe(onNext: {
                 print($0)
             })
+            .disposed(by: disposeBag)
     }
     
 }

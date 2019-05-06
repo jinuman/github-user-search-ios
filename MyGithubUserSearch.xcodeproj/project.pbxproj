@@ -15,6 +15,7 @@
 		3687DCE9227EAD62002DECAE /* MyGithubUserSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DCE8227EAD62002DECAE /* MyGithubUserSearchTests.swift */; };
 		3687DCFD228021D1002DECAE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DCFC228021D1002DECAE /* User.swift */; };
 		3687DCFF2280236F002DECAE /* GithubService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DCFE2280236F002DECAE /* GithubService.swift */; };
+		3687DD0122802A1C002DECAE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DD0022802A1C002DECAE /* Constants.swift */; };
 		9903C10116569632318FFD89 /* Pods_MyGithubUserSearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4323F4C3AAF8F13C262D901 /* Pods_MyGithubUserSearchTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		3687DCEA227EAD62002DECAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3687DCFC228021D1002DECAE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3687DCFE2280236F002DECAE /* GithubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubService.swift; sourceTree = "<group>"; };
+		3687DD0022802A1C002DECAE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		48D21C2F0F8C2B764AFA1CEB /* Pods-MyGithubUserSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearch.release.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearch/Pods-MyGithubUserSearch.release.xcconfig"; sourceTree = "<group>"; };
 		48F7F1FE5A475C0183862C9D /* Pods-MyGithubUserSearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearchTests.debug.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5615257F8C47672A677CFA84 /* Pods-MyGithubUserSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearch.debug.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearch/Pods-MyGithubUserSearch.debug.xcconfig"; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				3687DCD3227EAD60002DECAE /* AppDelegate.swift */,
 				3687DCFC228021D1002DECAE /* User.swift */,
 				3687DCD5227EAD60002DECAE /* UserSearchViewController.swift */,
+				3687DD0022802A1C002DECAE /* Constants.swift */,
 				3687DCFE2280236F002DECAE /* GithubService.swift */,
 			);
 			path = Sources;
@@ -333,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3687DD0122802A1C002DECAE /* Constants.swift in Sources */,
 				3687DCD6227EAD60002DECAE /* UserSearchViewController.swift in Sources */,
 				3687DCD4227EAD60002DECAE /* AppDelegate.swift in Sources */,
 				3687DCFF2280236F002DECAE /* GithubService.swift in Sources */,
