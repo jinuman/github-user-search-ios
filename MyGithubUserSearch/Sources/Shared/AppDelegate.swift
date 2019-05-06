@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
         
         let userSearchVC = UserSearchViewController()
+        userSearchVC.reactor = UserSearchReactor()
         
         let navigationController = UINavigationController(rootViewController: userSearchVC)
         window.rootViewController = navigationController

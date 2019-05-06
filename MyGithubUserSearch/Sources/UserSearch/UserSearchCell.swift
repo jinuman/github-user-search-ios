@@ -11,6 +11,19 @@ import Then
 
 class UserSearchCell: UICollectionViewCell {
     
+    var userItem: UserItem? {
+        didSet {
+            fillupCell(with: userItem)
+        }
+    }
+    
+    private func fillupCell(with userItem: UserItem?) {
+        guard let userItem = userItem else { return }
+        profileImageView.loadImageUsingCache(with: userItem.avatarUrl)
+        usernameLabel.text = userItem.username
+        scoreLabel.text = "score: \(userItem.score.description)"
+    }
+    
     // MARK:- Cell screen properties
     private lazy var profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill

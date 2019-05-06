@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxDataSources
 
 struct User: Decodable {
     var userItems: [UserItem]
@@ -27,5 +28,16 @@ struct UserItem: Decodable {
         case score
         case avatarUrl = "avatar_url"
         case organizationsUrl = "organizations_url"
+    }
+}
+
+extension User: SectionModelType {
+    var items: [UserItem] {
+        return self.userItems
+    }
+    
+    init(original: User, items: [UserItem]) {
+        self = original
+        self.userItems = items
     }
 }

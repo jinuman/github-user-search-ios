@@ -25,6 +25,7 @@ class GithubService {
     static func search(with query: String?, page: Int) -> Observable<(repos: [User], nextPage: Int?)> {
         let emptyResult: ([User], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
+        print("current URL: \(url.absoluteString)")
         
         return Observable.create { observer in
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
