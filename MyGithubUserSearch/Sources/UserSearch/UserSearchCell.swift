@@ -29,19 +29,16 @@ class UserSearchCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = Metric.profileImageSize / 2
-        $0.backgroundColor = .cyan
     }
     
     private lazy var usernameLabel = UILabel().then {
         $0.font = UIFont.boldSystemFont(ofSize: 14)
         $0.textColor = .black
-        $0.text = "jinuman"
     }
     
     private let scoreLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 12)
         $0.textColor = .gray
-        $0.text = "100.00"
     }
     
     override init(frame: CGRect) {
