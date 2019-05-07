@@ -14,8 +14,14 @@ struct Metric {
     static let profileSpacing: CGFloat = 5
     static let contentSpacing: CGFloat = 3
     static let edgeInset: CGFloat = 25
+    
+    static let orgImageSize: CGFloat = 40
+    static let orgBorderWidth: CGFloat = 0.5
+    static let orgVerticalSpacing: CGFloat = 3
+    static let orgItemSpacing: CGFloat = 5
 }
 
 enum Reusable {
     static let userSearchCell = ReusableCell<UserSearchCell>()
+    static let organizationCell = ReusableCell<OrganizationCell>()
 }

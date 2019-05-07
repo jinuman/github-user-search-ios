@@ -14,7 +14,7 @@ import RxDataSources
 import Then
 
 class UserSearchViewController: UIViewController {
-
+    
     var disposeBag: DisposeBag = DisposeBag()
     
     // MARK:- Sreen Properties
@@ -30,10 +30,13 @@ class UserSearchViewController: UIViewController {
         $0.register(Reusable.userSearchCell)
     }
     
-    private let dataSource = RxCollectionViewSectionedReloadDataSource<User>(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
+    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<User>(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
         
         let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
         cell.userItem = userItem
+        cell.didTapCellItem = self.didTapCellItem
+        cell.flag = self.flag
+        
         return cell
     })
     
@@ -77,6 +80,27 @@ class UserSearchViewController: UIViewController {
         
         spinner.centerInSuperview()
     }
+    
+    // ==== State ====
+    var selectedIndexPaths = [IndexPath]()
+    var flag: Bool = false
+    
+    // when tapped event
+    private func didTapCellItem(isExpanded: Bool, cell: UICollectionViewCell) {
+        flag = isExpanded
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        print("Clicked: \(indexPath)")
+        
+        if isExpanded {
+            selectedIndexPaths.append(indexPath)
+        } else {
+            guard let idx = selectedIndexPaths.firstIndex(of: indexPath) else { return }
+            selectedIndexPaths.remove(at: Int(idx))
+        }
+        collectionView.reloadData()
+        print("## selectedIndexPath: \(selectedIndexPaths)")
+    }
+    // ===============
 }
 
 extension UserSearchViewController: View {
@@ -125,10 +149,29 @@ extension UserSearchViewController: View {
 // MARK:- Regarding collectionView
 extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let guide = view.safeAreaLayoutGuide
         let width: CGFloat = guide.layoutFrame.width - Metric.edgeInset * 2
-        let height: CGFloat = Metric.profileImageSize
-        return CGSize(width: width, height: height)
+        if selectedIndexPaths.contains(indexPath) {
+            let height: CGFloat = Metric.profileImageSize + Metric.orgImageSize + Metric.orgVerticalSpacing
+            return CGSize(width: width, height: height)
+        } else {
+            let height: CGFloat = Metric.profileImageSize
+            return CGSize(width: width, height: height)
+        }
+        
+//        let width: CGFloat = guide.layoutFrame.width - Metric.edgeInset * 2
+//        let frame = CGRect(x: 0, y: 0, width: width, height: 93)
+//        let dummyCell = UserSearchCell(frame: frame)
+
+////        dummyCell.org = orgs[indexPath.item]
+//        dummyCell.layoutIfNeeded()  // after comment set
+//
+//        let targetSize = CGSize(width: view.frame.width, height: 100)
+//        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+//
+//        return CGSize(width: width, height: estimatedSize.height)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
