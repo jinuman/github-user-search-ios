@@ -64,7 +64,39 @@ class GithubService {
             task.resume()
             
             return Disposables.create { task.cancel() }
-            
             }.catchErrorJustReturn(emptyResult)
+    }
+    
+    static func fetch(with organizationUrl: String?) -> Observable<[Organization]> {
+        guard
+            let urlString = organizationUrl,
+            let url = URL(string: urlString) else { return .just([]) }
+        
+        return Observable.create { observer in
+            let task = URLSession.shared.dataTask(with: url) { (data, res, err) in
+                if let err = err {
+                    print("session error: \(err.localizedDescription)")
+                    observer.onError(err)
+                    return
+                }
+                
+                guard let data = data else { return }
+                
+                do {
+                    let organizations = try JSONDecoder().decode([Organization].self, from: data)
+                    print("organizations: \(organizations.count)")
+                    observer.onNext(organizations)
+                    
+                } catch let jsonError {
+                    observer.onError(jsonError)
+                }
+                observer.onCompleted()
+                
+            }
+            task.resume()
+            
+            return Disposables.create { task.cancel() }
+            }
+//            .catchErrorJustReturn([])
     }
 }

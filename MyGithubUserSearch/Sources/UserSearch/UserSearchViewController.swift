@@ -33,10 +33,9 @@ class UserSearchViewController: UIViewController {
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<User>(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
         
         let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
+        cell.reactor = UserSearchCellReactor()
         cell.userItem = userItem
         cell.didTapCellItem = self.didTapCellItem
-        cell.flag = self.flag
-        
         return cell
     })
     
@@ -82,12 +81,11 @@ class UserSearchViewController: UIViewController {
     }
     
     // ==== State ====
-    var selectedIndexPaths = [IndexPath]()
-    var flag: Bool = false
+    private var selectedIndexPaths = [IndexPath]()
     
     // when tapped event
     private func didTapCellItem(isExpanded: Bool, cell: UICollectionViewCell) {
-        flag = isExpanded
+        
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         print("Clicked: \(indexPath)")
         
@@ -133,6 +131,11 @@ extension UserSearchViewController: View {
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
+        reactor.state
+            .map { $0.isLoading }
+            .bind(to: spinner.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
         // Misc.
         // Scroll to top if previous search text was scrolled
         userSearchBar.rx.text
@@ -159,19 +162,6 @@ extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
             let height: CGFloat = Metric.profileImageSize
             return CGSize(width: width, height: height)
         }
-        
-//        let width: CGFloat = guide.layoutFrame.width - Metric.edgeInset * 2
-//        let frame = CGRect(x: 0, y: 0, width: width, height: 93)
-//        let dummyCell = UserSearchCell(frame: frame)
-
-////        dummyCell.org = orgs[indexPath.item]
-//        dummyCell.layoutIfNeeded()  // after comment set
-//
-//        let targetSize = CGSize(width: view.frame.width, height: 100)
-//        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
-//
-//        return CGSize(width: width, height: estimatedSize.height)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

@@ -7,6 +7,20 @@
 //
 
 import Foundation
+import RxDataSources
+
+struct OrganizationType {
+    var items: [Organization]
+}
+
+extension OrganizationType: SectionModelType {
+    typealias Item = Organization
+    
+    init(original: OrganizationType, items: [Item]) {
+        self = original
+        self.items = items
+    }
+}
 
 struct Organization: Decodable {
     let avatarUrl: String
