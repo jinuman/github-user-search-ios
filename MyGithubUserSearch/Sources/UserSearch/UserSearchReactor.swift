@@ -17,7 +17,8 @@ class UserSearchReactor: Reactor {
         case updateQuery(String?)
         case loadNextPage
         
-        // 두번째 fetch 구현?
+        // 두번째 fetch 구현? ㄴㄴ
+        case updateOrganizationUrl(String?)
     }
     
     enum Mutation {
@@ -25,6 +26,8 @@ class UserSearchReactor: Reactor {
         case setUsers([UserItem], nextPage: Int?)
         case appendUsers([UserItem], nextPage: Int?)
         case setLoading(Bool)
+        
+        case setAvatars([OrganizationItem])
     }
     
     let initialState: State = State()
@@ -34,6 +37,8 @@ class UserSearchReactor: Reactor {
         var userItems = [UserItem]()
         var nextPage: Int?
         var isLoading: Bool = false
+        
+        var avatars = [OrganizationItem]()
     }
     
     func mutate(action: UserSearchReactor.Action) -> Observable<UserSearchReactor.Mutation> {
@@ -62,6 +67,13 @@ class UserSearchReactor: Reactor {
                     .map { Mutation.appendUsers($0.0, nextPage: $0.1)},
                 Observable.just(Mutation.setLoading(false))
                 ])
+            
+        // 필요없는 짓
+        case .updateOrganizationUrl(let urlString):
+            return Observable.concat([
+                GithubService.fetchOrganizations(with: urlString)
+                    .map { Mutation.setAvatars($0) }
+                ])
         }
     }
     
@@ -88,6 +100,11 @@ class UserSearchReactor: Reactor {
         case .setLoading(let isLoading):
             var newState = state
             newState.isLoading = isLoading
+            return newState
+            
+        case .setAvatars(let avatars):
+            var newState = state
+            newState.avatars = avatars
             return newState
         }
     }

@@ -19,7 +19,8 @@ class UserSearchCellReactor: Reactor {
     
     enum Mutation {
         case setOrganizationUrl(String?)
-        case setOrganizations([Organization])
+        
+        case setAvatarUrls([OrganizationItem])
         
         case setIsTapped(Bool)
     }
@@ -28,7 +29,7 @@ class UserSearchCellReactor: Reactor {
     
     struct State {
         var organizationUrlString: String?
-        var organizations = [Organization]()
+        var avatarUrls = [OrganizationItem]()
         
         var isTapped: Bool = false
     }
@@ -41,7 +42,7 @@ class UserSearchCellReactor: Reactor {
                 
                 GithubService.fetchOrganizations(with: urlString)
                     .takeUntil(self.action.filter(isUpdateUrlAction))
-                    .map { Mutation.setOrganizations($0) },
+                    .map { Mutation.setAvatarUrls($0) },
                 
                 Observable.just(Mutation.setIsTapped(true))
                 ])
@@ -56,10 +57,10 @@ class UserSearchCellReactor: Reactor {
             newState.organizationUrlString = urlString
             return newState
             
-        case .setOrganizations(let organizations):
+        case .setAvatarUrls(let organizations):
             var newState = state
-            newState.organizations = organizations
-            print("[State] orgs: \(newState.organizations.count)")
+            newState.avatarUrls = organizations
+            print("[State] orgs: \(newState.avatarUrls.count)")
             return newState
             
         case .setIsTapped(let isTapped):

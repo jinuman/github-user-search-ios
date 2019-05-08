@@ -67,7 +67,7 @@ class GithubService {
             }.catchErrorJustReturn(emptyResult)
     }
     
-    static func fetchOrganizations(with urlString: String?) -> Observable<[Organization]> {
+    static func fetchOrganizations(with urlString: String?) -> Observable<[OrganizationItem]> {
         guard
             let urlString = urlString,
             let url = URL(string: urlString) else { return .just([]) }
@@ -83,7 +83,7 @@ class GithubService {
                 guard let data = data else { return }
                 
                 do {
-                    let organizations = try JSONDecoder().decode([Organization].self, from: data)
+                    let organizations = try JSONDecoder().decode([OrganizationItem].self, from: data)
                     print("organizations: \(organizations.count)")
                     observer.onNext(organizations)
                     
