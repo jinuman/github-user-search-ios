@@ -9,14 +9,15 @@
 import UIKit
 
 class OrganizationCell: UICollectionViewCell {
-    var org: Organization? {
+    
+    var organization: Organization? {
         didSet {
-            guard let urlString = org?.avatarUrl else { return }
-            self.orgImageView.loadImageUsingCache(with: urlString)
+            guard let organization = organization else { return }
+            self.orgImageView.loadImageUsingCache(with: organization.avatarUrl)
         }
     }
     
-    let orgImageView = UIImageView().then {
+    private let orgImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = Metric.orgImageSize / 2
