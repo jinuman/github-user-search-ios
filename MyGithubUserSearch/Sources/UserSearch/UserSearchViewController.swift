@@ -123,7 +123,8 @@ extension UserSearchViewController: View {
         
         // State binding: Reactor(State) -> View
         reactor.state
-            .map { $0.users }
+            .map { $0.userItems }
+            .map { [User(userItems: $0)] }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         

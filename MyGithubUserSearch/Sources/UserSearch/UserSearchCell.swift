@@ -47,7 +47,7 @@ class UserSearchCell: UICollectionViewCell {
         $0.textColor = .gray
     }
     
-    private let dataSource = RxCollectionViewSectionedReloadDataSource<OrganizationType>(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
+    private let dataSource = RxCollectionViewSectionedReloadDataSource<Organization>(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
 
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
         if let url = URL(string: item.avatarUrl) {
@@ -152,9 +152,9 @@ extension UserSearchCell: ReactorKit.View {
         
         // State Binding
         reactor.state
-            .map { $0.organizations }
+            .map { $0.avatarUrls }
             .filter { $0.isEmpty == false }
-            .map { [OrganizationType(items: $0)] }
+            .map { [Organization(items: $0)] }
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         

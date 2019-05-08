@@ -22,8 +22,8 @@ class GithubService {
         return URL(string: "https://api.github.com/search/users?q=\(query)&page=\(page)")
     }
     
-    static func fetchUsers(with query: String?, page: Int) -> Observable<(repos: [User], nextPage: Int?)> {
-        let emptyResult: ([User], Int?) = ([], nil)
+    static func fetchUsers(with query: String?, page: Int) -> Observable<(repos: [UserItem], nextPage: Int?)> {
+        let emptyResult: ([UserItem], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
         print("current URL: \(url.absoluteString)")
         
@@ -54,7 +54,7 @@ class GithubService {
                         ? nil
                         : page + 1
                     print("userItems: \(user.userItems.count), nextPage: \(nextPage ?? -1)")
-                    observer.onNext(([user], nextPage))
+                    observer.onNext((user.userItems, nextPage))
                     
                 } catch let jsonError {
                     observer.onError(jsonError)
@@ -67,7 +67,7 @@ class GithubService {
             }.catchErrorJustReturn(emptyResult)
     }
     
-    static func fetchOrganizations(with urlString: String?) -> Observable<[Organization]> {
+    static func fetchOrganizations(with urlString: String?) -> Observable<[OrganizationItem]> {
         guard
             let urlString = urlString,
             let url = URL(string: urlString) else { return .just([]) }
@@ -83,7 +83,7 @@ class GithubService {
                 guard let data = data else { return }
                 
                 do {
-                    let organizations = try JSONDecoder().decode([Organization].self, from: data)
+                    let organizations = try JSONDecoder().decode([OrganizationItem].self, from: data)
                     print("organizations: \(organizations.count)")
                     observer.onNext(organizations)
                     

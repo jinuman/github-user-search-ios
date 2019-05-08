@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		3542930202897947C5895020 /* Pods_MyGithubUserSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E619842930ECFD69FAE99D79 /* Pods_MyGithubUserSearch.framework */; };
 		361A3B2A228180B500E436B2 /* OrganizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A3B29228180B500E436B2 /* OrganizationCell.swift */; };
-		361A3B2C2281888E00E436B2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A3B2B2281888E00E436B2 /* Organization.swift */; };
+		361A3B2C2281888E00E436B2 /* OrganizationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A3B2B2281888E00E436B2 /* OrganizationItem.swift */; };
 		361A3B2E2281ACBD00E436B2 /* UserSearchCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A3B2D2281ACBD00E436B2 /* UserSearchCellReactor.swift */; };
 		3687DCD4227EAD60002DECAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DCD3227EAD60002DECAE /* AppDelegate.swift */; };
 		3687DCD6227EAD60002DECAE /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DCD5227EAD60002DECAE /* UserSearchViewController.swift */; };
@@ -37,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		361A3B29228180B500E436B2 /* OrganizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationCell.swift; sourceTree = "<group>"; };
-		361A3B2B2281888E00E436B2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
+		361A3B2B2281888E00E436B2 /* OrganizationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationItem.swift; sourceTree = "<group>"; };
 		361A3B2D2281ACBD00E436B2 /* UserSearchCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCellReactor.swift; sourceTree = "<group>"; };
 		3687DCD0227EAD60002DECAE /* MyGithubUserSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyGithubUserSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3687DCD3227EAD60002DECAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				3687DCFC228021D1002DECAE /* User.swift */,
-				361A3B2B2281888E00E436B2 /* Organization.swift */,
+				361A3B2B2281888E00E436B2 /* OrganizationItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -382,7 +382,7 @@
 			files = (
 				361A3B2A228180B500E436B2 /* OrganizationCell.swift in Sources */,
 				3687DD0122802A1C002DECAE /* Constants.swift in Sources */,
-				361A3B2C2281888E00E436B2 /* Organization.swift in Sources */,
+				361A3B2C2281888E00E436B2 /* OrganizationItem.swift in Sources */,
 				3687DCD6227EAD60002DECAE /* UserSearchViewController.swift in Sources */,
 				3687DCD4227EAD60002DECAE /* AppDelegate.swift in Sources */,
 				3687DCFF2280236F002DECAE /* GithubService.swift in Sources */,
