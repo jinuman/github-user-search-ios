@@ -16,12 +16,14 @@ class UserSearchReactor: Reactor {
     enum Action {
         case updateQuery(String?)
         case loadNextPage
+        
+        // 두번째 fetch 구현?
     }
     
     enum Mutation {
         case setQuery(String?)
-        case setUsers([User], nextPage: Int?)
-        case appendUsers([User], nextPage: Int?)
+        case setUsers([UserItem], nextPage: Int?)
+        case appendUsers([UserItem], nextPage: Int?)
         case setLoading(Bool)
     }
     
@@ -29,7 +31,7 @@ class UserSearchReactor: Reactor {
     
     struct State {
         var query: String?
-        var users = [User]()
+        var userItems = [UserItem]()
         var nextPage: Int?
         var isLoading: Bool = false
     }
@@ -73,13 +75,13 @@ class UserSearchReactor: Reactor {
             
         case let .setUsers(users, nextPage):
             var newState = state
-            newState.users = users
+            newState.userItems = users
             newState.nextPage = nextPage
             return newState
             
         case let .appendUsers(users, nextPage):
             var newState = state
-            newState.users.append(contentsOf: users)
+            newState.userItems.append(contentsOf: users)
             newState.nextPage = nextPage
             return newState
             
