@@ -48,8 +48,7 @@ class UserSearchCell: UICollectionViewCell {
 
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
         cell.organization = item
-        print("dataSource items: \(item.avatarUrl)")
-        
+//        print("dataSource items: \(item.avatarUrl)")
         return cell
     })
     
@@ -57,7 +56,7 @@ class UserSearchCell: UICollectionViewCell {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .cyan
+        cv.backgroundColor = .white
         return cv
     }()
     
@@ -122,11 +121,10 @@ class UserSearchCell: UICollectionViewCell {
         scoreLabel.text = "score: \(userItem.score.description)"
     }
     
-    #warning("Need to refactor...")
-    // ===== States =====
+    #warning("Need to refactor")
+    // == States ==
     var didTapCellItem: ((Bool, UICollectionViewCell) -> ())?
     var isTappedAgain: Bool = false
-    // ===== ===== =====
 }
 
 extension UserSearchCell: View {
@@ -162,8 +160,6 @@ extension UserSearchCell: View {
                 self.didTapCellItem?(isTapped, self)
             })
             .disposed(by: disposeBag)
-        
-        // miscellaneous.
     }
 }
 

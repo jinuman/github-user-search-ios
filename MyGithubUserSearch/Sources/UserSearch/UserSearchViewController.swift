@@ -17,6 +17,8 @@ class UserSearchViewController: UIViewController {
     
     var disposeBag: DisposeBag = DisposeBag()
     
+    private var selectedIndexPaths = [IndexPath]()
+    
     // MARK:- Sreen Properties
     private let userSearchBar = UISearchBar(frame: .zero).then {
         $0.searchBarStyle = .prominent
@@ -80,15 +82,10 @@ class UserSearchViewController: UIViewController {
         spinner.centerInSuperview()
     }
     
-    // ==== State ====
-    private var selectedIndexPaths = [IndexPath]()
-    
-    // when tapped event
+    // When tapped event come
     private func didTapCellItem(isExpanded: Bool, cell: UICollectionViewCell) {
         
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        print("Clicked: \(indexPath)")
-        
         if isExpanded {
             selectedIndexPaths.append(indexPath)
         } else {
@@ -96,9 +93,8 @@ class UserSearchViewController: UIViewController {
             selectedIndexPaths.remove(at: Int(idx))
         }
         collectionView.reloadData()
-        print("## selectedIndexPath: \(selectedIndexPaths)")
+//        print("## selectedIndexPath: \(selectedIndexPaths)")
     }
-    // ===============
 }
 
 extension UserSearchViewController: View {

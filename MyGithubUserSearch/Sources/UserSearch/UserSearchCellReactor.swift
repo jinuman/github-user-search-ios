@@ -59,13 +59,13 @@ class UserSearchCellReactor: Reactor {
         case .setOrganizations(let organizations):
             var newState = state
             newState.organizations = organizations
-            print("!! State orgs: \(newState.organizations.count)")
+            print("[State] orgs: \(newState.organizations.count)")
             return newState
             
         case .setIsTapped(let isTapped):
             var newState = state
             newState.isTapped = isTapped
-            print("!! State isTapped: \(newState.isTapped)")
+//            print("[State] isTapped: \(newState.isTapped)")
             return newState
         }
     }
