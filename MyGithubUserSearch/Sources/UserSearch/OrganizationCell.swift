@@ -10,30 +10,25 @@ import UIKit
 
 class OrganizationCell: UICollectionViewCell {
     
-    var organization: Organization? {
-        didSet {
-            guard let organization = organization else { return }
-            self.orgImageView.loadImageUsingCache(with: organization.avatarUrl)
-        }
-    }
-    
-    private let orgImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = Metric.orgImageSize / 2
-        $0.layer.borderWidth = Metric.orgBorderWidth
-        $0.layer.borderColor = UIColor.lightGray.cgColor
-        
-        $0.backgroundColor = .yellow
-    }
+    let organizationImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.backgroundColor = .yellow
+        return iv
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(orgImageView)
+        addSubview(organizationImageView)
         
-        orgImageView.centerInSuperview()
-        orgImageView.constrainWidth(constant: Metric.orgImageSize)
-        orgImageView.constrainHeight(constant: Metric.orgImageSize)
+        organizationImageView.centerInSuperview()
+        organizationImageView.constrainWidth(constant: Metric.orgImageSize)
+        organizationImageView.constrainHeight(constant: Metric.orgImageSize)
+        
+        organizationImageView.layer.cornerRadius = Metric.orgImageSize / 2
+        organizationImageView.layer.borderWidth = Metric.orgBorderWidth
+        organizationImageView.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {

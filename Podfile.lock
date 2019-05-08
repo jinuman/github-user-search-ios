@@ -1,5 +1,6 @@
 PODS:
   - Differentiator (4.0.1)
+  - Kingfisher (5.4.0)
   - ReactorKit (1.2.1):
     - RxSwift (>= 4.0.0)
   - ReusableKit (2.1.0):
@@ -18,6 +19,7 @@ PODS:
   - Then (2.4.0)
 
 DEPENDENCIES:
+  - Kingfisher
   - ReactorKit
   - ReusableKit
   - RxCocoa
@@ -28,6 +30,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Differentiator
+    - Kingfisher
     - ReactorKit
     - ReusableKit
     - RxCocoa
@@ -38,6 +41,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  Kingfisher: 9c8f2cc6710334e06f32ba2b45e77707d5e2f0c9
   ReactorKit: 8be57f0527ad1ac2963cd5c338274a46a01e57a3
   ReusableKit: d0b040de03b293288b0ca27a78602691d3346d9b
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
@@ -46,6 +50,6 @@ SPEC CHECKSUMS:
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
-PODFILE CHECKSUM: 5da2c8490e362afaf41a5cd4d605edd11f3ac8cb
+PODFILE CHECKSUM: bd30219becad74981a0439ece3aca1b1e71956ba
 
 COCOAPODS: 1.6.0
