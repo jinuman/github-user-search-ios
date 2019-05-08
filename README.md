@@ -2,7 +2,7 @@
 
 ## Demo
 
-![demo](https://user-images.githubusercontent.com/26243835/57365007-3d246b80-71bf-11e9-9ba9-2f93eba30cdd.gif)
+![demo](https://user-images.githubusercontent.com/26243835/57371746-8f20bd80-71ce-11e9-825c-4e2447cf1b61.gif)
 
 ## Environments
 
@@ -19,6 +19,11 @@
 ### Architecture
 
 - ReactorKit
+
+### Others
+
+- Then
+- ReusableKit
 
 ## How to run
 ```
