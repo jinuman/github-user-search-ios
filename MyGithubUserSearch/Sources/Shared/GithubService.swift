@@ -22,7 +22,7 @@ class GithubService {
         return URL(string: "https://api.github.com/search/users?q=\(query)&page=\(page)")
     }
     
-    static func search(with query: String?, page: Int) -> Observable<(repos: [User], nextPage: Int?)> {
+    static func fetchUsers(with query: String?, page: Int) -> Observable<(repos: [User], nextPage: Int?)> {
         let emptyResult: ([User], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
         print("current URL: \(url.absoluteString)")
@@ -67,9 +67,9 @@ class GithubService {
             }.catchErrorJustReturn(emptyResult)
     }
     
-    static func fetch(with organizationUrl: String?) -> Observable<[Organization]> {
+    static func fetchOrganizations(with urlString: String?) -> Observable<[Organization]> {
         guard
-            let urlString = organizationUrl,
+            let urlString = urlString,
             let url = URL(string: urlString) else { return .just([]) }
         
         return Observable.create { observer in
@@ -97,6 +97,6 @@ class GithubService {
             
             return Disposables.create { task.cancel() }
             }
-//            .catchErrorJustReturn([])
+            .catchErrorJustReturn([])
     }
 }

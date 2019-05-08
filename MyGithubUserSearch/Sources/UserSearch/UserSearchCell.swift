@@ -132,12 +132,16 @@ class UserSearchCell: UICollectionViewCell {
 extension UserSearchCell: View {
     
     func bind(reactor: UserSearchCellReactor) {
+        
         containerCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         // Action Binding
         tapGesture.rx.event
             .take(1)
+            .withLatestFrom(reactor.state)
+            .map { $0.isTapped }
+            .filter { $0 == false }
             .map { _ in self.userItem?.organizationsUrl}
             .map { Reactor.Action.updateOrganizationUrl($0) }
             .bind(to: reactor.action)
@@ -148,7 +152,6 @@ extension UserSearchCell: View {
             .map { $0.organizations }
             .filter { $0.isEmpty == false }
             .map { [OrganizationType(items: $0)] }
-            .debug()
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
@@ -160,7 +163,7 @@ extension UserSearchCell: View {
             })
             .disposed(by: disposeBag)
         
-        // Misc.
+        // miscellaneous.
     }
 }
 
