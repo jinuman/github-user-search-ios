@@ -53,7 +53,7 @@ class UserSearchCell: UICollectionViewCell {
         if let url = URL(string: item.avatarUrl) {
             cell.organizationImageView.kf.setImage(with: url)
         }
-        print("dataSource avatar: \(item.avatarUrl)")
+//        print("dataSource avatar: \(item.avatarUrl)")
         return cell
     })
     
