@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import ReactorKit
+import Kingfisher
 
 class UserSearchCell: UICollectionViewCell {
     
@@ -22,6 +23,8 @@ class UserSearchCell: UICollectionViewCell {
             fillupCell(with: userItem)
         }
     }
+    
+    var didTapCellItem: ((Bool, UICollectionViewCell) -> ())?
     
     // MARK:- Cell screen properties
     private let tapGesture = UITapGestureRecognizer()
@@ -47,8 +50,10 @@ class UserSearchCell: UICollectionViewCell {
     private let dataSource = RxCollectionViewSectionedReloadDataSource<OrganizationType>(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
 
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
-        cell.organization = item
-//        print("dataSource items: \(item.avatarUrl)")
+        if let url = URL(string: item.avatarUrl) {
+            cell.organizationImageView.kf.setImage(with: url)
+        }
+        print("dataSource avatar: \(item.avatarUrl)")
         return cell
     })
     
@@ -60,7 +65,7 @@ class UserSearchCell: UICollectionViewCell {
         return cv
     }()
     
-    
+    // MARK:- Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -81,6 +86,7 @@ class UserSearchCell: UICollectionViewCell {
         containerCollectionView.isHidden = false
     }
     
+    // MARK:- Setup layout methods
     private func setupCellSubviews() {
         let stackView =  UIStackView(arrangedSubviews: [usernameLabel, scoreLabel])
         stackView.axis = .vertical
@@ -123,11 +129,10 @@ class UserSearchCell: UICollectionViewCell {
     
     #warning("Need to refactor")
     // == States ==
-    var didTapCellItem: ((Bool, UICollectionViewCell) -> ())?
     var isTappedAgain: Bool = false
 }
 
-extension UserSearchCell: View {
+extension UserSearchCell: ReactorKit.View {
     
     func bind(reactor: UserSearchCellReactor) {
         

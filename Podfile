@@ -14,6 +14,7 @@ target 'MyGithubUserSearch' do
 
   pod 'Then'
   pod 'ReusableKit'
+  pod 'Kingfisher'
 
   target 'MyGithubUserSearchTests' do
     inherit! :search_paths
