@@ -11,7 +11,6 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 import RxDataSources
-import Then
 
 class UserSearchViewController: UIViewController {
     
@@ -20,17 +19,32 @@ class UserSearchViewController: UIViewController {
     private var selectedIndexPaths = [IndexPath]()
     
     // MARK:- Sreen Properties
-    private let userSearchBar = UISearchBar(frame: .zero).then {
-        $0.searchBarStyle = .prominent
-        $0.placeholder = "Github 사용자를 검색해보세요.."
-        let textFieldInsideSearchBar = $0.value(forKey: "searchField") as? UITextField
+//    private let userSearchBar = UISearchBar(frame: .zero).then {
+//        $0.searchBarStyle = .prominent
+//        $0.placeholder = "Github 사용자를 검색해보세요.."
+//        let textFieldInsideSearchBar = $0.value(forKey: "searchField") as? UITextField
+//        textFieldInsideSearchBar?.backgroundColor = UIColor(r: 240, g: 240, b: 240)
+//    }
+//
+    private let userSearchBar: UISearchBar = {
+        let sb = UISearchBar(frame: .zero)
+        sb.searchBarStyle = .prominent
+        sb.placeholder = "Github 사용자를 검색해보세요.."
+        let textFieldInsideSearchBar = sb.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.backgroundColor = UIColor(r: 240, g: 240, b: 240)
-    }
+        return sb
+    }()
     
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
-        $0.backgroundColor = .white
-        $0.register(Reusable.userSearchCell)
-    }
+//    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+//        $0.backgroundColor = .white
+//        $0.register(Reusable.userSearchCell)
+//    }
+    
+    private let collectionView: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.backgroundColor = .white
+        return cv
+    }()
     
     typealias UserDataSource = RxCollectionViewSectionedReloadDataSource<User>
     
@@ -49,6 +63,7 @@ class UserSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        collectionView.register(Reusable.userSearchCell)
         
         setupSubviews()
     }
