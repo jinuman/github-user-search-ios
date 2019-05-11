@@ -32,7 +32,9 @@ class UserSearchViewController: UIViewController {
         $0.register(Reusable.userSearchCell)
     }
     
-    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<User>(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
+    typealias UserDataSource = RxCollectionViewSectionedReloadDataSource<User>
+    
+    private lazy var dataSource = UserDataSource(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
         
         let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
         cell.reactor = UserSearchCellReactor()

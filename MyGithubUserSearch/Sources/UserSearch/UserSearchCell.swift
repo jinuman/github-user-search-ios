@@ -47,7 +47,9 @@ class UserSearchCell: UICollectionViewCell {
         $0.textColor = .gray
     }
     
-    private let dataSource = RxCollectionViewSectionedReloadDataSource<Organization>(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
+    typealias OrganizationDataSource = RxCollectionViewSectionedReloadDataSource<Organization>
+    
+    private let dataSource = OrganizationDataSource(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
 
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
         if let url = URL(string: item.avatarUrl) {
