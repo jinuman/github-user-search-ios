@@ -155,8 +155,10 @@ extension UserSearchCell: ReactorKit.View {
         // State Binding
         reactor.state
             .map { $0.avatarUrls }
+            .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
             .filter { $0.isEmpty == false }
-            .map { [Organization(items: $0)] }
+            .map { [Organization(organizationItems: $0)] }
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
