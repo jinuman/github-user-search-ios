@@ -26,27 +26,24 @@ class UserSearchCell: UICollectionViewCell {
     var didTapCellItem: ((Bool, UICollectionViewCell) -> ())?
     
     // MARK:- Cell screen properties
+    private let tapGestureByImage = UITapGestureRecognizer()
+    private let tapGestureByLabel = UITapGestureRecognizer()
+    
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        iv.addGestureRecognizer(tapGesture)
+        iv.addGestureRecognizer(tapGestureByImage)
         return iv
     }()
-    
-    @objc private func handleTap() {
-        print("Hello tap!!")
-    }
     
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .black
         label.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        label.addGestureRecognizer(tapGesture)
+        label.addGestureRecognizer(tapGestureByLabel)
         return label
     }()
     
@@ -85,8 +82,6 @@ class UserSearchCell: UICollectionViewCell {
         
         containerCollectionView.register(Reusable.organizationCell)
         setupContainerCollectionView()
-        
-//        profileImageView.addGestureRecognizer(tapGesture)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -149,19 +144,30 @@ extension UserSearchCell: ReactorKit.View {
     
     func bind(reactor: UserSearchCellReactor) {
         
+        // DataSource
         containerCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         // Action Binding
-//        tapGesture.rx.event
-//            .take(1)
-//            .withLatestFrom(reactor.state)
-//            .map { $0.isTapped }
-//            .filter { $0 == false }
-//            .map { _ in self.userItem?.organizationsUrl}
-//            .map { Reactor.Action.updateOrganizationUrl($0) }
-//            .bind(to: reactor.action)
-//            .disposed(by: disposeBag)
+        tapGestureByImage.rx.event
+            .take(1)
+            .withLatestFrom(reactor.state)
+            .map { $0.isTapped }
+            .filter { $0 == false }
+            .map { _ in self.userItem?.organizationsUrl}
+            .map { Reactor.Action.updateOrganizationUrl($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        tapGestureByLabel.rx.event
+            .take(1)
+            .withLatestFrom(reactor.state)
+            .map { $0.isTapped }
+            .filter { $0 == false }
+            .map { _ in self.userItem?.organizationsUrl}
+            .map { Reactor.Action.updateOrganizationUrl($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
         // State Binding
         reactor.state
