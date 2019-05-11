@@ -9,9 +9,9 @@
 import Foundation
 import RxSwift
 
-class GithubService {
+class GithubAPI {
     
-    enum GithubServiceError: Error {
+    enum GithubAPIError: Error {
         case responseError
     }
     
@@ -42,7 +42,7 @@ class GithubService {
                     if statusCode == 403 {
                         print("Github API rate limit exceeded. Wait for 60 seconds and try again.")
                     }
-                    observer.onError(GithubServiceError.responseError)
+                    observer.onError(GithubAPIError.responseError)
                     return
                 }
                 

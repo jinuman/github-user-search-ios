@@ -49,7 +49,7 @@ class UserSearchReactor: Reactor {
                 Observable.just(Mutation.setQuery(query)),
                 
                 // step 2: API call -> set users
-                GithubService.fetchUsers(with: query, page: 1)
+                GithubAPI.fetchUsers(with: query, page: 1)
                     .takeUntil(self.action.filter(isUpdateQueryAction))
                     .map { Mutation.setUsers($0.0, nextPage: $0.1) }
                 ])
@@ -62,7 +62,7 @@ class UserSearchReactor: Reactor {
             return Observable.concat([
                 Observable.just(Mutation.setLoading(true)),
                 // API call -> append users
-                GithubService.fetchUsers(with: currentState.query, page: nextPage)
+                GithubAPI.fetchUsers(with: currentState.query, page: nextPage)
                     .takeUntil(self.action.filter(isUpdateQueryAction))
                     .map { Mutation.appendUsers($0.0, nextPage: $0.1)},
                 Observable.just(Mutation.setLoading(false))
@@ -71,7 +71,7 @@ class UserSearchReactor: Reactor {
         // 필요없는 짓
         case .updateOrganizationUrl(let urlString):
             return Observable.concat([
-                GithubService.fetchOrganizations(with: urlString)
+                GithubAPI.fetchOrganizations(with: urlString)
                     .map { Mutation.setAvatars($0) }
                 ])
         }
