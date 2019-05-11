@@ -22,7 +22,6 @@
 
 ### Others
 
-- Then
 - ReusableKit
 - Kingfisher
 
