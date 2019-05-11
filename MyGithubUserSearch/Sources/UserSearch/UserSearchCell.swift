@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Then
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -27,27 +26,37 @@ class UserSearchCell: UICollectionViewCell {
     var didTapCellItem: ((Bool, UICollectionViewCell) -> ())?
     
     // MARK:- Cell screen properties
-    private let tapGesture = UITapGestureRecognizer()
+    private let tapGestureByImage = UITapGestureRecognizer()
+    private let tapGestureByLabel = UITapGestureRecognizer()
     
-    private lazy var profileImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = Metric.profileImageSize / 2
-        $0.isUserInteractionEnabled = true
-    }
+    private lazy var profileImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(tapGestureByImage)
+        return iv
+    }()
     
-    private lazy var usernameLabel = UILabel().then {
-        $0.font = UIFont.boldSystemFont(ofSize: 14)
-        $0.textColor = .black
-        $0.isUserInteractionEnabled = true
-    }
+    private lazy var usernameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = .black
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGestureByLabel)
+        return label
+    }()
     
-    private let scoreLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .gray
-    }
+    private let scoreLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .gray
+        return label
+    }()
     
-    private let dataSource = RxCollectionViewSectionedReloadDataSource<Organization>(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
+    typealias OrganizationDataSource = RxCollectionViewSectionedReloadDataSource<Organization>
+    
+    private let dataSource = OrganizationDataSource(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
 
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
         if let url = URL(string: item.avatarUrl) {
@@ -73,8 +82,6 @@ class UserSearchCell: UICollectionViewCell {
         
         containerCollectionView.register(Reusable.organizationCell)
         setupContainerCollectionView()
-        
-        profileImageView.addGestureRecognizer(tapGesture)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -102,6 +109,7 @@ class UserSearchCell: UICollectionViewCell {
                                 bottom: nil,
                                 trailing: nil,
                                 size: CGSize(width: Metric.profileImageSize, height: Metric.profileImageSize))
+        profileImageView.layer.cornerRadius = Metric.profileImageSize / 2
         
         stackView.anchor(top: topAnchor,
                          leading: profileImageView.trailingAnchor,
@@ -136,11 +144,22 @@ extension UserSearchCell: ReactorKit.View {
     
     func bind(reactor: UserSearchCellReactor) {
         
+        // DataSource
         containerCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         // Action Binding
-        tapGesture.rx.event
+        tapGestureByImage.rx.event
+            .take(1)
+            .withLatestFrom(reactor.state)
+            .map { $0.isTapped }
+            .filter { $0 == false }
+            .map { _ in self.userItem?.organizationsUrl}
+            .map { Reactor.Action.updateOrganizationUrl($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        tapGestureByLabel.rx.event
             .take(1)
             .withLatestFrom(reactor.state)
             .map { $0.isTapped }
@@ -153,8 +172,10 @@ extension UserSearchCell: ReactorKit.View {
         // State Binding
         reactor.state
             .map { $0.avatarUrls }
+            .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
             .filter { $0.isEmpty == false }
-            .map { [Organization(items: $0)] }
+            .map { [Organization(organizationItems: $0)] }
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         

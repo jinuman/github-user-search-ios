@@ -11,8 +11,7 @@ target 'MyGithubUserSearch' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
-
-  pod 'Then'
+  
   pod 'ReusableKit'
   pod 'Kingfisher'
 

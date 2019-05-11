@@ -10,19 +10,21 @@ import Foundation
 import RxDataSources
 
 struct Organization {
-    var items: [OrganizationItem]
+    var organizationItems: [OrganizationItem]
 }
 
 extension Organization: SectionModelType {
-    typealias Item = OrganizationItem
+    var items: [OrganizationItem] {
+        return self.organizationItems
+    }
     
-    init(original: Organization, items: [Item]) {
+    init(original: Organization, items: [OrganizationItem]) {
         self = original
-        self.items = items
+        self.organizationItems = items
     }
 }
 
-struct OrganizationItem: Decodable {
+struct OrganizationItem: Decodable, Equatable {
     let avatarUrl: String
     
     enum CodingKeys: String, CodingKey {

@@ -40,7 +40,7 @@ class UserSearchCellReactor: Reactor {
             return Observable.concat([
                 Observable.just(Mutation.setOrganizationUrl(urlString)),
                 
-                GithubService.fetchOrganizations(with: urlString)
+                GithubAPI.fetchOrganizations(with: urlString)
                     .takeUntil(self.action.filter(isUpdateUrlAction))
                     .map { Mutation.setAvatarUrls($0) },
                 
