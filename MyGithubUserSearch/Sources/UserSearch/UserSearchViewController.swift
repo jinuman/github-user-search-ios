@@ -19,13 +19,7 @@ class UserSearchViewController: UIViewController {
     private var selectedIndexPaths = [IndexPath]()
     
     // MARK:- Sreen Properties
-//    private let userSearchBar = UISearchBar(frame: .zero).then {
-//        $0.searchBarStyle = .prominent
-//        $0.placeholder = "Github 사용자를 검색해보세요.."
-//        let textFieldInsideSearchBar = $0.value(forKey: "searchField") as? UITextField
-//        textFieldInsideSearchBar?.backgroundColor = UIColor(r: 240, g: 240, b: 240)
-//    }
-//
+
     private let userSearchBar: UISearchBar = {
         let sb = UISearchBar(frame: .zero)
         sb.searchBarStyle = .prominent
@@ -34,11 +28,6 @@ class UserSearchViewController: UIViewController {
         textFieldInsideSearchBar?.backgroundColor = UIColor(r: 240, g: 240, b: 240)
         return sb
     }()
-    
-//    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
-//        $0.backgroundColor = .white
-//        $0.register(Reusable.userSearchCell)
-//    }
     
     private let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
