@@ -173,7 +173,7 @@ extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
             let height: CGFloat = Metric.profileImageSize + Metric.orgImageSize + Metric.orgVerticalSpacing
             return CGSize(width: width, height: height)
         } else {
-            let height: CGFloat = Metric.profileImageSize
+            let height: CGFloat = Metric.profileImageSize + Metric.orgVerticalSpacing
             return CGSize(width: width, height: height)
         }
     }
