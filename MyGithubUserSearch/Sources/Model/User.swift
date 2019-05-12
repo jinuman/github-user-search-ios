@@ -20,13 +20,13 @@ struct User: Decodable {
 struct UserItem: Decodable {
     let username: String
     let score: Double
-    let avatarUrl: String
+    let profileImageUrl: String
     let organizationsUrl: String
     
     enum CodingKeys: String, CodingKey {
         case username = "login"
         case score
-        case avatarUrl = "avatar_url"
+        case profileImageUrl = "avatar_url"
         case organizationsUrl = "organizations_url"
     }
 }

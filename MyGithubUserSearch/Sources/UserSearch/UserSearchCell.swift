@@ -59,10 +59,10 @@ class UserSearchCell: UITableViewCell {
     private let dataSource = OrganizationDataSource(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
         
-        if let url = URL(string: item.avatarUrl) {
+        if let url = URL(string: item.organizationImageUrl) {
             cell.organizationImageView.kf.setImage(with: url)
         }
-//        print("dataSource avatar: \(item.avatarUrl)")
+//        print("dataSource avatar: \(item.organizationImageUrl)")
         return cell
     })
     
@@ -136,7 +136,7 @@ class UserSearchCell: UITableViewCell {
     
     private func fillupCell(with userItem: UserItem?) {
         guard let userItem = userItem else { return }
-        profileImageView.loadImageUsingCache(with: userItem.avatarUrl)
+        profileImageView.loadImageUsingCache(with: userItem.profileImageUrl)
         usernameLabel.text = userItem.username
         scoreLabel.text = "score: \(userItem.score.description)"
     }

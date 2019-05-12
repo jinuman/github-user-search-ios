@@ -25,9 +25,9 @@ extension Organization: SectionModelType {
 }
 
 struct OrganizationItem: Decodable, Equatable {
-    let avatarUrl: String
+    let organizationImageUrl: String
     
     enum CodingKeys: String, CodingKey {
-        case avatarUrl = "avatar_url"
+        case organizationImageUrl = "avatar_url"
     }
 }
