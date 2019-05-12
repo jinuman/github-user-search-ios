@@ -82,6 +82,7 @@ class UserSearchCell: UITableViewCell {
         
         containerCollectionView.register(Reusable.organizationCell)
         setupContainerCollectionView()
+        containerCollectionView.alwaysBounceHorizontal = true
     }
     
     required init?(coder aDecoder: NSCoder) {
