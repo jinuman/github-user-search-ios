@@ -19,7 +19,6 @@ class UserSearchViewController: UIViewController {
     private var selectedIndexPaths = [IndexPath]()
     
     // MARK:- Sreen Properties
-
     private let userSearchBar: UISearchBar = {
         let sb = UISearchBar(frame: .zero)
         sb.searchBarStyle = .prominent
@@ -29,17 +28,18 @@ class UserSearchViewController: UIViewController {
         return sb
     }()
     
-    private let collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        cv.backgroundColor = .white
-        return cv
+    private let tableView: UITableView = {
+        let tv = UITableView(frame: .zero, style: .plain)
+        tv.separatorStyle = .none
+        tv.backgroundColor = .white
+        return tv
     }()
     
-    typealias UserDataSource = RxCollectionViewSectionedReloadDataSource<User>
+    typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
     
-    private lazy var dataSource = UserDataSource(configureCell: { (dataSource, collectionView, indexPath, userItem) -> UICollectionViewCell in
+    private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
         
-        let cell = collectionView.dequeue(Reusable.userSearchCell, for: indexPath)
+        let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
         cell.reactor = UserSearchCellReactor()
         cell.userItem = userItem
         cell.didTapCellItem = self.didTapCellItem
@@ -52,7 +52,7 @@ class UserSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        collectionView.register(Reusable.userSearchCell)
+        tableView.register(Reusable.userSearchCell)
         
         setupSubviews()
     }
@@ -60,12 +60,8 @@ class UserSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        collectionView.rx.setDelegate(self)
+        tableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK:- Layout methods
@@ -73,7 +69,7 @@ class UserSearchViewController: UIViewController {
         let navBar = navigationController?.navigationBar
         
         navBar?.addSubview(userSearchBar)
-        [collectionView, spinner].forEach {
+        [tableView, spinner].forEach {
             view.addSubview($0)
         }
         
@@ -83,22 +79,22 @@ class UserSearchViewController: UIViewController {
                          trailing: navBar?.trailingAnchor,
                          padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
         
-        collectionView.fillSuperview()
+        tableView.fillSuperview()
         
         spinner.centerInSuperview()
     }
     
     // When tapped event come
-    private func didTapCellItem(isExpanded: Bool, cell: UICollectionViewCell) {
+    private func didTapCellItem(isExpanded: Bool, cell: UITableViewCell) {
         
-        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
         if isExpanded {
             selectedIndexPaths.append(indexPath)
         } else {
             guard let idx = selectedIndexPaths.firstIndex(of: indexPath) else { return }
             selectedIndexPaths.remove(at: Int(idx))
         }
-        collectionView.reloadData()
+        tableView.reloadData()
 //        print("## selectedIndexPath: \(selectedIndexPaths)")
     }
 }
@@ -114,14 +110,14 @@ extension UserSearchViewController: View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        collectionView.rx.contentOffset
+        tableView.rx.contentOffset
             .filter { [weak self] (offset) -> Bool in
                 guard let self = self else { return false }
                 
                 let scrollPosition: CGFloat = offset.y
-                let contentHeight: CGFloat = self.collectionView.contentSize.height
+                let contentHeight: CGFloat = self.tableView.contentSize.height
                 
-                return scrollPosition > contentHeight - self.collectionView.bounds.height
+                return scrollPosition > contentHeight - self.tableView.bounds.height
             }
             .map { _ in Reactor.Action.loadNextPage }
             .bind(to: reactor.action)
@@ -131,7 +127,8 @@ extension UserSearchViewController: View {
         reactor.state
             .map { $0.userItems }
             .map { [User(userItems: $0)] }
-            .bind(to: collectionView.rx.items(dataSource: dataSource))
+            .observeOn(MainScheduler.asyncInstance)
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         reactor.state
@@ -142,37 +139,25 @@ extension UserSearchViewController: View {
         // Misc.
         // Scroll to top if previous search text was scrolled
         userSearchBar.rx.text
-            .withLatestFrom(collectionView.rx.contentOffset)
+            .withLatestFrom(tableView.rx.contentOffset)
             .filter { $0.y > 0 }
             .subscribe({ [weak self] _ in
                 guard let self = self else { return }
-                self.collectionView.contentOffset.y = 0
+                self.tableView.contentOffset.y = 0
             })
             .disposed(by: disposeBag)
     }
 }
 
-// MARK:- Regarding collectionView
-extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+// MARK:- Regarding tableView delegate
+extension UserSearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let height: CGFloat = selectedIndexPaths.contains(indexPath)
+            ? Metric.profileImageSize + Metric.edgeInset + Metric.orgImageSize + Metric.orgVerticalSpacing
+            : Metric.profileImageSize + Metric.edgeInset + Metric.orgVerticalSpacing
         
-        let guide = view.safeAreaLayoutGuide
-        let width: CGFloat = guide.layoutFrame.width - Metric.edgeInset * 2
-        if selectedIndexPaths.contains(indexPath) {
-            let height: CGFloat = Metric.profileImageSize + Metric.orgImageSize + Metric.orgVerticalSpacing
-            return CGSize(width: width, height: height)
-        } else {
-            let height: CGFloat = Metric.profileImageSize + Metric.orgVerticalSpacing
-            return CGSize(width: width, height: height)
-        }
+        return height
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return Metric.edgeInset
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: Metric.edgeInset, left: 0, bottom: Metric.edgeInset, right: 0)
-    }
 }
 

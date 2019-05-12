@@ -13,7 +13,7 @@ import RxDataSources
 import ReactorKit
 import Kingfisher
 
-class UserSearchCell: UICollectionViewCell {
+class UserSearchCell: UITableViewCell {
     
     var disposeBag: DisposeBag = DisposeBag()
     
@@ -23,7 +23,7 @@ class UserSearchCell: UICollectionViewCell {
         }
     }
     
-    var didTapCellItem: ((Bool, UICollectionViewCell) -> ())?
+    var didTapCellItem: ((Bool, UITableViewCell) -> ())?
     
     // MARK:- Cell screen properties
     private let tapGestureByImage = UITapGestureRecognizer()
@@ -57,8 +57,8 @@ class UserSearchCell: UICollectionViewCell {
     typealias OrganizationDataSource = RxCollectionViewSectionedReloadDataSource<Organization>
     
     private let dataSource = OrganizationDataSource(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
-
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
+        
         if let url = URL(string: item.avatarUrl) {
             cell.organizationImageView.kf.setImage(with: url)
         }
@@ -75,8 +75,8 @@ class UserSearchCell: UICollectionViewCell {
     }()
     
     // MARK:- Initializer
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setupCellSubviews()
         
@@ -88,10 +88,16 @@ class UserSearchCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        containerCollectionView.isHidden = false
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let inset: CGFloat = Metric.edgeInset
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: inset / 2, left: inset, bottom: inset / 2, right: inset))
     }
+    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        containerCollectionView.isHidden = false
+//    }
     
     // MARK:- Setup layout methods
     private func setupCellSubviews() {
@@ -101,30 +107,30 @@ class UserSearchCell: UICollectionViewCell {
         stackView.spacing = Metric.contentSpacing
         
         [profileImageView, stackView].forEach {
-            addSubview($0)
+            contentView.addSubview($0)
         }
         
-        profileImageView.anchor(top: topAnchor,
-                                leading: leadingAnchor,
+        profileImageView.anchor(top: contentView.topAnchor,
+                                leading: contentView.leadingAnchor,
                                 bottom: nil,
                                 trailing: nil,
                                 size: CGSize(width: Metric.profileImageSize, height: Metric.profileImageSize))
         profileImageView.layer.cornerRadius = Metric.profileImageSize / 2
         
-        stackView.anchor(top: topAnchor,
+        stackView.anchor(top: contentView.topAnchor,
                          leading: profileImageView.trailingAnchor,
                          bottom: profileImageView.bottomAnchor,
-                         trailing: trailingAnchor,
+                         trailing: contentView.trailingAnchor,
                          padding: UIEdgeInsets(top: 0, left: Metric.profileSpacing, bottom: 0, right: 0))
     }
     
     private func setupContainerCollectionView() {
-        addSubview(containerCollectionView)
+        contentView.addSubview(containerCollectionView)
         
         containerCollectionView.anchor(top: profileImageView.bottomAnchor,
-                                       leading: leadingAnchor,
-                                       bottom: bottomAnchor,
-                                       trailing: trailingAnchor,
+                                       leading: contentView.leadingAnchor,
+                                       bottom: contentView.bottomAnchor,
+                                       trailing: contentView.trailingAnchor,
                                        padding: UIEdgeInsets(top: Metric.orgVerticalSpacing, left: 0, bottom: 0, right: 0))
     }
     
@@ -191,7 +197,7 @@ extension UserSearchCell: ReactorKit.View {
 
 extension UserSearchCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: containerCollectionView.frame.height, height: Metric.orgImageSize)
+        return CGSize(width: Metric.orgImageSize, height: Metric.orgImageSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
