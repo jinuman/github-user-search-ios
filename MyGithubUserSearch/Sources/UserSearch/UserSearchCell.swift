@@ -94,10 +94,9 @@ class UserSearchCell: UITableViewCell {
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: inset / 2, left: inset, bottom: inset / 2, right: inset))
     }
     
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        containerCollectionView.isHidden = false
-//    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
     
     // MARK:- Setup layout methods
     private func setupCellSubviews() {
@@ -140,10 +139,6 @@ class UserSearchCell: UITableViewCell {
         usernameLabel.text = userItem.username
         scoreLabel.text = "score: \(userItem.score.description)"
     }
-    
-    #warning("Need to refactor")
-    // == States ==
-    var isTappedAgain: Bool = false
 }
 
 extension UserSearchCell: ReactorKit.View {
@@ -168,7 +163,7 @@ extension UserSearchCell: ReactorKit.View {
         
         // State Binding
         reactor.state
-            .map { $0.avatarUrls }
+            .map { $0.organizationItems }
             .distinctUntilChanged()
             .filter { $0.isEmpty == false }
             .map { [Organization(organizationItems: $0)] }
@@ -176,6 +171,7 @@ extension UserSearchCell: ReactorKit.View {
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
+        // Misc.
         reactor.state
             .map { $0.isTapped }
             .subscribe(onNext: { [weak self] isTapped in

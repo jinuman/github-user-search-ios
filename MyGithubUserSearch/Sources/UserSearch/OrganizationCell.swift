@@ -14,7 +14,6 @@ class OrganizationCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .yellow
         return iv
     }()
     
