@@ -155,17 +155,8 @@ extension UserSearchCell: ReactorKit.View {
             .disposed(by: disposeBag)
         
         // Action Binding
-        tapGestureByImage.rx.event
-            .take(1)
-            .withLatestFrom(reactor.state)
-            .map { $0.isTapped }
-            .filter { $0 == false }
-            .map { _ in self.userItem?.organizationsUrl}
-            .map { Reactor.Action.updateOrganizationUrl($0) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        tapGestureByLabel.rx.event
+        Observable.of(tapGestureByImage.rx.event, tapGestureByLabel.rx.event)
+            .merge()
             .take(1)
             .withLatestFrom(reactor.state)
             .map { $0.isTapped }
@@ -179,9 +170,9 @@ extension UserSearchCell: ReactorKit.View {
         reactor.state
             .map { $0.avatarUrls }
             .distinctUntilChanged()
-            .observeOn(MainScheduler.instance)
             .filter { $0.isEmpty == false }
             .map { [Organization(organizationItems: $0)] }
+            .observeOn(MainScheduler.asyncInstance)
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
