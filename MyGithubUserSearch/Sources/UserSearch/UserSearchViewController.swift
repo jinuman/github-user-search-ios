@@ -97,6 +97,8 @@ class UserSearchViewController: UIViewController {
         tableView.reloadData()
 //        print("## selectedIndexPath: \(selectedIndexPaths)")
     }
+    
+    var isSearching: Bool = false
 }
 
 extension UserSearchViewController: View {
@@ -139,11 +141,20 @@ extension UserSearchViewController: View {
         // Misc.
         // Scroll to top if previous search text was scrolled
         userSearchBar.rx.text
+            .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .withLatestFrom(tableView.rx.contentOffset)
             .filter { $0.y > 0 }
             .subscribe({ [weak self] _ in
                 guard let self = self else { return }
                 self.tableView.contentOffset.y = 0
+            })
+            .disposed(by: disposeBag)
+        
+        userSearchBar.rx.text
+            .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe({ [weak self] _ in
+                guard let self = self else { return }
+                self.selectedIndexPaths = []
             })
             .disposed(by: disposeBag)
     }
@@ -152,7 +163,8 @@ extension UserSearchViewController: View {
 // MARK:- Regarding tableView delegate
 extension UserSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height: CGFloat = selectedIndexPaths.contains(indexPath)
+        
+        let height: CGFloat = selectedIndexPaths.contains(indexPath) && !isSearching
             ? Metric.profileImageSize + Metric.edgeInset + Metric.orgImageSize + Metric.orgVerticalSpacing
             : Metric.profileImageSize + Metric.edgeInset + Metric.orgVerticalSpacing
         
