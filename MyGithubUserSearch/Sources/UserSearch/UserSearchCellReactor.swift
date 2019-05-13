@@ -13,30 +13,37 @@ import RxCocoa
 
 class UserSearchCellReactor: Reactor {
     
+    let initialState: State
+    
+    init(userItem: UserItem) {
+        self.initialState = State(userItem: userItem)
+    }
+    
     enum Action {
         case updateOrganizationUrl(String?)
     }
     
     enum Mutation {
-        case setOrganizationUrl(String?)
         case setOrganizationItems([OrganizationItem])
         case setIsTapped(Bool)
     }
     
-    let initialState: State = State()
-    
     struct State {
-        var organizationUrlString: String?
-        var organizationItems = [OrganizationItem]()
+        let userItem: UserItem
+        var organizationItems: [OrganizationItem]
         var isTapped: Bool = false
+        
+        init(userItem: UserItem, organizationItems: [OrganizationItem] = [], isTapped: Bool = false) {
+            self.userItem = userItem
+            self.organizationItems = organizationItems
+            self.isTapped = isTapped
+        }
     }
     
     func mutate(action: UserSearchCellReactor.Action) -> Observable<UserSearchCellReactor.Mutation> {
         switch action {
         case .updateOrganizationUrl(let urlString):
             return Observable.concat([
-                Observable.just(Mutation.setOrganizationUrl(urlString)),
-                
                 GithubAPI.fetchOrganizations(with: urlString)
                     .takeUntil(self.action.filter(isUpdateUrlAction))
                     .map { Mutation.setOrganizationItems($0) },
@@ -48,12 +55,6 @@ class UserSearchCellReactor: Reactor {
     
     func reduce(state: UserSearchCellReactor.State, mutation: UserSearchCellReactor.Mutation) -> UserSearchCellReactor.State {
         switch mutation {
-            
-        case .setOrganizationUrl(let urlString):
-            var newState = state
-            newState.organizationUrlString = urlString
-            return newState
-            
         case .setOrganizationItems(let organizations):
             var newState = state
             newState.organizationItems = organizations
