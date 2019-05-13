@@ -13,6 +13,8 @@ import RxCocoa
 
 class UserSearchReactor: Reactor {
     
+    let initialState: State = State()
+    
     enum Action {
         case updateQuery(String?)
         case loadNextPage
@@ -24,8 +26,6 @@ class UserSearchReactor: Reactor {
         case appendUsers([UserItem], nextPage: Int?)
         case setLoading(Bool)
     }
-    
-    let initialState: State = State()
     
     struct State {
         var query: String?
@@ -88,6 +88,11 @@ class UserSearchReactor: Reactor {
             newState.isLoading = isLoading
             return newState
         }
+    }
+    
+    func userSearchCellReactor(for indexPath: IndexPath) -> UserSearchCellReactor {
+        let userItem = currentState.userItems[indexPath.row]
+        return UserSearchCellReactor(userItem: userItem)
     }
     
     // .updateQuery action is fired -> true

@@ -40,8 +40,7 @@ class UserSearchViewController: UIViewController {
     private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
         
         let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
-        cell.reactor = UserSearchCellReactor()
-        cell.userItem = userItem
+        cell.reactor = self.reactor?.userSearchCellReactor(for: indexPath)
         cell.didTapCellItem = self.didTapCellItem
         return cell
     })
@@ -55,13 +54,6 @@ class UserSearchViewController: UIViewController {
         tableView.register(Reusable.userSearchCell)
         
         setupSubviews()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tableView.rx.setDelegate(self)
-            .disposed(by: disposeBag)
     }
     
     // MARK:- Layout methods
@@ -84,7 +76,8 @@ class UserSearchViewController: UIViewController {
         spinner.centerInSuperview()
     }
     
-    // When tapped event come
+    // MARK:- Helper method
+    // When tapped event came from cell
     private func didTapCellItem(isExpanded: Bool, cell: UITableViewCell) {
         
         guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -98,11 +91,13 @@ class UserSearchViewController: UIViewController {
 //        print("## selectedIndexPath: \(selectedIndexPaths)")
     }
     
-    var isSearching: Bool = false
 }
 
-extension UserSearchViewController: View {
+extension UserSearchViewController: ReactorKit.View {
     func bind(reactor: UserSearchReactor) {
+        // DataSource
+        tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
         
         // Action binding: View -> Reactor(Action)
         userSearchBar.rx.text
@@ -150,6 +145,7 @@ extension UserSearchViewController: View {
             })
             .disposed(by: disposeBag)
         
+        // Reset selectedIndexPaths when search bar text change
         userSearchBar.rx.text
             .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe({ [weak self] _ in
@@ -164,7 +160,7 @@ extension UserSearchViewController: View {
 extension UserSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let height: CGFloat = selectedIndexPaths.contains(indexPath) && !isSearching
+        let height: CGFloat = selectedIndexPaths.contains(indexPath)
             ? Metric.profileImageSize + Metric.edgeInset + Metric.orgImageSize + Metric.orgVerticalSpacing
             : Metric.profileImageSize + Metric.edgeInset + Metric.orgVerticalSpacing
         

@@ -17,17 +17,11 @@ class UserSearchCell: UITableViewCell {
     
     var disposeBag: DisposeBag = DisposeBag()
     
-    var userItem: UserItem? {
-        didSet {
-            fillupCell(with: userItem)
-        }
-    }
-    
     var didTapCellItem: ((Bool, UITableViewCell) -> ())?
     
     // MARK:- Cell screen properties
-    private let tapGestureByImage = UITapGestureRecognizer()
-    private let tapGestureByLabel = UITapGestureRecognizer()
+    private let tapGestureByImage: UITapGestureRecognizer = UITapGestureRecognizer()
+    private let tapGestureByLabel: UITapGestureRecognizer = UITapGestureRecognizer()
     
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -85,10 +79,6 @@ class UserSearchCell: UITableViewCell {
         containerCollectionView.alwaysBounceHorizontal = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         let inset: CGFloat = Metric.edgeInset
@@ -97,6 +87,10 @@ class UserSearchCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK:- Setup layout methods
@@ -134,17 +128,22 @@ class UserSearchCell: UITableViewCell {
                                        padding: UIEdgeInsets(top: Metric.orgVerticalSpacing, left: 0, bottom: 0, right: 0))
     }
     
-    private func fillupCell(with userItem: UserItem?) {
-        guard let userItem = userItem else { return }
-        profileImageView.loadImageUsingCache(with: userItem.profileImageUrl)
+    // MARK:- Fillup cell with Reactor
+    private func fillupCell(with reactor: UserSearchCellReactor) {
+        let userItem: UserItem = reactor.currentState.userItem
+        
+        guard let profileImageUrl = URL(string: userItem.profileImageUrl) else { return }
+        profileImageView.kf.setImage(with: profileImageUrl)
         usernameLabel.text = userItem.username
-        scoreLabel.text = "score: \(userItem.score.description)"
+        let scoreText: String = "score: \(userItem.score.description)"
+        scoreLabel.text = scoreText
     }
+
 }
 
 extension UserSearchCell: ReactorKit.View {
-    
     func bind(reactor: UserSearchCellReactor) {
+        self.fillupCell(with: reactor)
         
         // DataSource
         containerCollectionView.rx.setDelegate(self)
@@ -153,11 +152,10 @@ extension UserSearchCell: ReactorKit.View {
         // Action Binding
         Observable.of(tapGestureByImage.rx.event, tapGestureByLabel.rx.event)
             .merge()
-            .take(1)
             .withLatestFrom(reactor.state)
             .map { $0.isTapped }
             .filter { $0 == false }
-            .map { _ in self.userItem?.organizationsUrl}
+            .map { _ in reactor.currentState.userItem.organizationsUrl}
             .map { Reactor.Action.updateOrganizationUrl($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
