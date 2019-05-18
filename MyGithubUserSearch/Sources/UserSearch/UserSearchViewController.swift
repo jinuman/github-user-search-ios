@@ -40,7 +40,7 @@ class UserSearchViewController: UIViewController {
     private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
         
         let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
-        cell.reactor = self.reactor?.userSearchCellReactor(for: indexPath)
+        cell.reactor = UserSearchCellReactor(userItem: userItem)
         cell.didTapCellItem = self.didTapCellItem
         return cell
     })

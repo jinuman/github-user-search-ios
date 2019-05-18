@@ -90,11 +90,6 @@ class UserSearchReactor: Reactor {
         }
     }
     
-    func userSearchCellReactor(for indexPath: IndexPath) -> UserSearchCellReactor {
-        let userItem = currentState.userItems[indexPath.row]
-        return UserSearchCellReactor(userItem: userItem)
-    }
-    
     // .updateQuery action is fired -> true
     private func isUpdateQueryAction(_ action: Action) -> Bool {
         if case .updateQuery = action {
