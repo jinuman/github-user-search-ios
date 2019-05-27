@@ -32,10 +32,11 @@ class UserSearchViewController: UIViewController {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.separatorStyle = .none
         tv.backgroundColor = .white
+        tv.allowsSelection = false
         return tv
     }()
     
-    typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
+    private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
     
     private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
         
@@ -58,17 +59,17 @@ class UserSearchViewController: UIViewController {
     
     // MARK:- Layout methods
     private func setupSubviews() {
-        let navBar = navigationController?.navigationBar
+        guard let navBar = navigationController?.navigationBar else { return }
         
-        navBar?.addSubview(userSearchBar)
+        navBar.addSubview(userSearchBar)
         [tableView, spinner].forEach {
             view.addSubview($0)
         }
         
-        userSearchBar.anchor(top: navBar?.topAnchor,
-                         leading: navBar?.leadingAnchor,
-                         bottom: navBar?.bottomAnchor,
-                         trailing: navBar?.trailingAnchor,
+        userSearchBar.anchor(top: navBar.topAnchor,
+                         leading: navBar.leadingAnchor,
+                         bottom: navBar.bottomAnchor,
+                         trailing: navBar.trailingAnchor,
                          padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
         
         tableView.fillSuperview()
@@ -166,6 +167,5 @@ extension UserSearchViewController: UITableViewDelegate {
         
         return height
     }
-    
 }
 

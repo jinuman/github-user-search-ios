@@ -17,6 +17,17 @@ struct User: Decodable {
     }
 }
 
+extension User: SectionModelType {
+    var items: [UserItem] {
+        return self.userItems
+    }
+    
+    init(original: User, items: [UserItem]) {
+        self = original
+        self.userItems = items
+    }
+}
+
 struct UserItem: Decodable {
     let username: String
     let score: Double
@@ -28,16 +39,5 @@ struct UserItem: Decodable {
         case score
         case profileImageUrl = "avatar_url"
         case organizationsUrl = "organizations_url"
-    }
-}
-
-extension User: SectionModelType {
-    var items: [UserItem] {
-        return self.userItems
-    }
-    
-    init(original: User, items: [UserItem]) {
-        self = original
-        self.userItems = items
     }
 }

@@ -18,6 +18,7 @@ class UserSearchCell: UITableViewCell {
     var disposeBag: DisposeBag = DisposeBag()
     
     var didTapCellItem: ((Bool, UITableViewCell) -> ())?
+    private var isTapped: Bool = false
     
     // MARK:- Cell screen properties
     private let tapGestureByImage: UITapGestureRecognizer = UITapGestureRecognizer()
@@ -56,15 +57,17 @@ class UserSearchCell: UITableViewCell {
         if let url = URL(string: item.organizationImageUrl) {
             cell.organizationImageView.kf.setImage(with: url)
         }
-//        print("dataSource avatar: \(item.organizationImageUrl)")
         return cell
     })
     
-    private let containerCollectionView: UICollectionView = {
+    private lazy var containerCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
+        cv.register(Reusable.organizationCell)
+        cv.alwaysBounceHorizontal = true
+        cv.showsHorizontalScrollIndicator = false
         return cv
     }()
     
@@ -73,10 +76,7 @@ class UserSearchCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setupCellSubviews()
-        
-        containerCollectionView.register(Reusable.organizationCell)
         setupContainerCollectionView()
-        containerCollectionView.alwaysBounceHorizontal = true
     }
     
     override func layoutSubviews() {
@@ -138,7 +138,6 @@ class UserSearchCell: UITableViewCell {
         let scoreText: String = "score: \(userItem.score.description)"
         scoreLabel.text = scoreText
     }
-
 }
 
 extension UserSearchCell: ReactorKit.View {
@@ -170,12 +169,15 @@ extension UserSearchCell: ReactorKit.View {
             .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        // Misc.
         reactor.state
+            .map { $0.organizationItems }
+            .filter { $0.isEmpty == false }  // If selected user has organization, send down
+            .withLatestFrom(reactor.state)
             .map { $0.isTapped }
             .subscribe(onNext: { [weak self] isTapped in
                 guard let self = self else { return }
                 self.didTapCellItem?(isTapped, self)
+                self.isTapped = isTapped
             })
             .disposed(by: disposeBag)
     }
@@ -183,7 +185,10 @@ extension UserSearchCell: ReactorKit.View {
 
 extension UserSearchCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Metric.orgImageSize, height: Metric.orgImageSize)
+        
+        return isTapped
+            ? CGSize(width: Metric.orgImageSize, height: Metric.orgImageSize)
+            : .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

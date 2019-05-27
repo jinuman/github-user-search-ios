@@ -25,7 +25,7 @@ class GithubAPI {
     static func fetchUsers(with query: String?, page: Int) -> Observable<(repos: [UserItem], nextPage: Int?)> {
         let emptyResult: ([UserItem], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
-        print("current URL: \(url.absoluteString)")
+        print("Current URL: \(url.absoluteString)")
         
         return Observable.create { observer in
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -84,7 +84,7 @@ class GithubAPI {
                 
                 do {
                     let organizations = try JSONDecoder().decode([OrganizationItem].self, from: data)
-                    print("organizations: \(organizations.count)")
+                    print("Found organizations: \(organizations.count)")
                     observer.onNext(organizations)
                     
                 } catch let jsonError {
