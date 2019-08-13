@@ -18,6 +18,7 @@ target 'MyGithubUserSearch' do
   target 'MyGithubUserSearchTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'RxExpect'
   end
 
 end

@@ -18,8 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.backgroundColor = .white
         window.makeKeyAndVisible()
         
-        let userSearchVC = UserSearchViewController()
-        userSearchVC.reactor = UserSearchReactor()
+        let api = GithubAPI()
+        let searchReactor = UserSearchReactor(api: GithubAPI())
+        let userSearchVC = UserSearchViewController(reactor: searchReactor, api: api)
+        
         
         let navigationController = UINavigationController(rootViewController: userSearchVC)
         window.rootViewController = navigationController

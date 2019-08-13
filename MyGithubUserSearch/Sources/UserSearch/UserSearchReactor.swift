@@ -14,6 +14,11 @@ import RxCocoa
 class UserSearchReactor: Reactor {
     
     let initialState: State = State()
+    private let api: GithubAPI
+    
+    init(api: GithubAPI) {
+        self.api = api
+    }
     
     enum Action {
         case updateQuery(String?)
@@ -42,7 +47,9 @@ class UserSearchReactor: Reactor {
                 Observable.just(Mutation.setQuery(query)),
                 
                 // step 2: API call -> set users
-                GithubAPI.fetchUsers(with: query, page: 1)
+                // Review: GithubAPI 는 주입을 받을 수 있도록 해야 합니다.
+                // 지금의 목표는 TestCode를 짜기 위함
+                self.api.fetchUsers(with: query, page: 1)
                     .takeUntil(self.action.filter(isUpdateQueryAction))
                     .map { Mutation.setUsers($0.0, nextPage: $0.1) }
                 ])
@@ -55,7 +62,7 @@ class UserSearchReactor: Reactor {
             return Observable.concat([
                 Observable.just(Mutation.setLoading(true)),
                 // API call -> append users
-                GithubAPI.fetchUsers(with: currentState.query, page: nextPage)
+                self.api.fetchUsers(with: currentState.query, page: nextPage)
                     .takeUntil(self.action.filter(isUpdateQueryAction))
                     .map { Mutation.appendUsers($0.0, nextPage: $0.1)},
                 Observable.just(Mutation.setLoading(false))
@@ -97,5 +104,11 @@ class UserSearchReactor: Reactor {
         } else {
             return false
         }
+    }
+}
+
+extension UserSearchReactor {
+    func getGithubAPI() -> GithubAPI {
+        return self.api
     }
 }

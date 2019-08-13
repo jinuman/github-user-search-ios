@@ -38,15 +38,28 @@ class UserSearchViewController: UIViewController {
     
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
     
-    private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
-        
+    private lazy var dataSource = UserDataSource(configureCell: { [weak githubAPI] (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
+        guard let githubAPI = githubAPI else { return UITableViewCell() }
         let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
-        cell.reactor = UserSearchCellReactor(userItem: userItem)
+        cell.reactor = UserSearchCellReactor(userItem: userItem, api: githubAPI)
         cell.didTapCellItem = self.didTapCellItem
         return cell
     })
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
+    
+    private var githubAPI: GithubAPI
+    
+    init(reactor: UserSearchReactor, api: GithubAPI) {
+        // Review: [Refactoring] AppDelegate에서 reactor를 설정하는 것보다 안쪽에서 하는 것이 코드 효율성이 좋습니다.
+        defer { self.reactor = reactor }
+        self.githubAPI = api
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK:- Life cycle methods
     override func viewDidLoad() {
@@ -94,7 +107,7 @@ class UserSearchViewController: UIViewController {
     
 }
 
-extension UserSearchViewController: ReactorKit.View {
+extension UserSearchViewController: View {
     func bind(reactor: UserSearchReactor) {
         // DataSource
         tableView.rx.setDelegate(self)

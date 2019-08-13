@@ -15,7 +15,10 @@ class UserSearchCellReactor: Reactor {
     
     let initialState: State
     
-    init(userItem: UserItem) {
+    private let api: GithubAPI
+    
+    init(userItem: UserItem, api: GithubAPI) {
+        self.api = api
         self.initialState = State(userItem: userItem)
     }
     
@@ -44,7 +47,7 @@ class UserSearchCellReactor: Reactor {
         switch action {
         case .updateOrganizationUrl(let urlString):
             return Observable.concat([
-                GithubAPI.fetchOrganizations(with: urlString)
+                self.api.fetchOrganizations(with: urlString)
                     .takeUntil(self.action.filter(isUpdateUrlAction))
                     .map { Mutation.setOrganizationItems($0) },
                 
