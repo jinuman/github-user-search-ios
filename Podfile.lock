@@ -13,9 +13,15 @@ PODS:
     - Differentiator (~> 4.0)
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
+  - RxExpect (2.0.0):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+    - RxTest (~> 5.0)
   - RxRelay (5.0.0):
     - RxSwift (~> 5)
   - RxSwift (5.0.0)
+  - RxTest (5.0.0):
+    - RxSwift (~> 5)
 
 DEPENDENCIES:
   - Kingfisher
@@ -23,6 +29,7 @@ DEPENDENCIES:
   - ReusableKit
   - RxCocoa
   - RxDataSources
+  - RxExpect
   - RxSwift
 
 SPEC REPOS:
@@ -33,8 +40,10 @@ SPEC REPOS:
     - ReusableKit
     - RxCocoa
     - RxDataSources
+    - RxExpect
     - RxRelay
     - RxSwift
+    - RxTest
 
 SPEC CHECKSUMS:
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
@@ -43,9 +52,11 @@ SPEC CHECKSUMS:
   ReusableKit: d0b040de03b293288b0ca27a78602691d3346d9b
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
+  RxExpect: 0685c9003c6d38532d5b101367eaf86b3adda81a
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  RxTest: 4349afe98f564e0a9bc19063368904622d17d49a
 
-PODFILE CHECKSUM: 95f744e637a90af1b9b782026d24dd3efe8a58df
+PODFILE CHECKSUM: ccc0468e3088f5c9710843420963fe795839226d
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.6.1
