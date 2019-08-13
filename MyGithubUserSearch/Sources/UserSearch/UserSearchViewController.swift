@@ -125,6 +125,11 @@ extension UserSearchViewController: ReactorKit.View {
         reactor.state
             .map { $0.userItems }
             .map { [User(userItems: $0)] }
+            // Review: [사용성] 검색된 결과와 동시에 키보드가 내려가야 합니다.
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.userSearchBar.resignFirstResponder()
+            })
             .observeOn(MainScheduler.asyncInstance)
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
