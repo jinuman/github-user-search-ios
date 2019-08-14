@@ -10,7 +10,7 @@
 import Foundation
 import RxSwift
 
-class GithubAPI {
+class GithubAPI: NetworkRequest {
     
     private let session = URLSession.shared
     
@@ -18,7 +18,7 @@ class GithubAPI {
         case responseError
     }
     
-    func url(for query: String?, page: Int) -> URL? {
+    private func url(for query: String?, page: Int) -> URL? {
         guard
             let query = query,
             query.isEmpty == false else { return nil }

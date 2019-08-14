@@ -49,9 +49,9 @@ class UserSearchViewController: UIViewController {
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
-    private var githubAPI: GithubAPI
+    private var githubAPI: NetworkRequest
     
-    init(reactor: UserSearchReactor, api: GithubAPI) {
+    init(reactor: UserSearchReactor, api: NetworkRequest) {
         // Review: [Refactoring] AppDelegate에서 reactor를 설정하는 것보다 안쪽에서 하는 것이 코드 효율성이 좋습니다.
         defer { self.reactor = reactor }
         self.githubAPI = api

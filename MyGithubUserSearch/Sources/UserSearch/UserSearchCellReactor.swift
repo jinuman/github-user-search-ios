@@ -15,9 +15,9 @@ class UserSearchCellReactor: Reactor {
     
     let initialState: State
     
-    private let api: GithubAPI
+    private let api: NetworkRequest
     
-    init(userItem: UserItem, api: GithubAPI) {
+    init(userItem: UserItem, api: NetworkRequest) {
         self.api = api
         self.initialState = State(userItem: userItem)
     }

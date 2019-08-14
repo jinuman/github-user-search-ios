@@ -14,9 +14,9 @@ import RxCocoa
 class UserSearchReactor: Reactor {
     
     let initialState: State = State()
-    private let api: GithubAPI
+    private let api: NetworkRequest
     
-    init(api: GithubAPI) {
+    init(api: NetworkRequest) {
         self.api = api
     }
     
@@ -107,11 +107,5 @@ class UserSearchReactor: Reactor {
         } else {
             return false
         }
-    }
-}
-
-extension UserSearchReactor {
-    func getGithubAPI() -> GithubAPI {
-        return self.api
     }
 }

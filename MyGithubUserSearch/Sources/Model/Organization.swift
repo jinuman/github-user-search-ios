@@ -24,7 +24,7 @@ extension Organization: SectionModelType {
     }
 }
 
-struct OrganizationItem: Decodable, Equatable {
+struct OrganizationItem: Codable, Equatable {
     let organizationImageUrl: String
     
     enum CodingKeys: String, CodingKey {
