@@ -147,6 +147,7 @@ extension UserSearchViewController: View {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
+        // Review: [사용성] 맨 마지막 페이지에 도달하면 "마지막 페이지" 라는 것을 사용자에게 알려야 합니다.
         // Review: [사용성] 검색된 결과가 없다면 "검색 결과가 없습니다" View가 보여줘야 합니다.
         
         // Review: [사용성] 로딩이 보여지는 동안은 사용자 이벤트를 막아야 합니다.
