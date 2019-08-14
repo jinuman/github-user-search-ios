@@ -13,11 +13,12 @@ import RxSwift
 
 extension MockNetworkRequest {
     @discardableResult
-    func setUserItems(_ items: [UserItem]? = nil, error: Error? = nil) {
+    func setUserItems(_ items: [UserItem]? = nil, error: Error? = nil) -> ([UserItem]?, Error?) {
+        let mockData = items ?? Fixture.UserItems.sampleUserItems
         stub(self, block: { mock in
-            let mockData = items ?? Fixture.UserItems.sampleUserItems
 
-            
+
+
             when(mock.fetchUsers(with: any(), page: any()))
                 .then { _ in
                     Observable.just(mockData)
@@ -30,5 +31,16 @@ extension MockNetworkRequest {
                     }
             }
         })
+        return (mockData, error)
+    }
+    @discardableResult
+    func setUserItemsPaging(_ items: [[UserItem]]) -> [[UserItem]] {
+        stub(self, block: { mock in
+            for (index, item) in items.enumerated() {
+                when(mock.fetchUsers(with: any(), page: equal(to: index)))
+                    .then { _ in return Observable.just((item, index)) }
+            }
+        })
+        return items
     }
 }

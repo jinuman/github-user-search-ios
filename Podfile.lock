@@ -18,6 +18,9 @@ PODS:
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
     - RxTest (~> 5.0)
+  - RxOptional (4.0.0):
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
   - RxRelay (5.0.0):
     - RxSwift (~> 5)
   - RxSwift (5.0.0)
@@ -33,6 +36,7 @@ DEPENDENCIES:
   - RxCocoa
   - RxDataSources
   - RxExpect
+  - RxOptional
   - RxSwift
   - SwiftLint
 
@@ -46,6 +50,7 @@ SPEC REPOS:
     - RxCocoa
     - RxDataSources
     - RxExpect
+    - RxOptional
     - RxRelay
     - RxSwift
     - RxTest
@@ -60,11 +65,12 @@ SPEC CHECKSUMS:
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxExpect: 0685c9003c6d38532d5b101367eaf86b3adda81a
+  RxOptional: 9904e2219d59260c3c171273d475b2126de187e8
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   RxTest: 4349afe98f564e0a9bc19063368904622d17d49a
   SwiftLint: 79d48a17c6565dc286c37efb8322c7b450f95c67
 
-PODFILE CHECKSUM: 19e2e86827afa73fc9c3b76de496922c6051a716
+PODFILE CHECKSUM: 2e29dcb62244277687917d8a1fb539cc56f992fe
 
 COCOAPODS: 1.6.1

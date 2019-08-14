@@ -37,7 +37,6 @@
 		BD6404E923038FF40093E566 /* Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404E523038FF30093E566 /* Fixture.swift */; };
 		BD6404EB2303917C0093E566 /* sample_user_item.json in Resources */ = {isa = PBXBuildFile; fileRef = BD6404EA2303917C0093E566 /* sample_user_item.json */; };
 		BD6404ED230391D20093E566 /* sample_organization.json in Resources */ = {isa = PBXBuildFile; fileRef = BD6404EC230391D20093E566 /* sample_organization.json */; };
-		BD6404EF230392A40093E566 /* Organization+Equal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404EE230392A40093E566 /* Organization+Equal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +85,6 @@
 		BD6404E523038FF30093E566 /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
 		BD6404EA2303917C0093E566 /* sample_user_item.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample_user_item.json; sourceTree = "<group>"; };
 		BD6404EC230391D20093E566 /* sample_organization.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample_organization.json; sourceTree = "<group>"; };
-		BD6404EE230392A40093E566 /* Organization+Equal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Organization+Equal.swift"; sourceTree = "<group>"; };
 		C4323F4C3AAF8F13C262D901 /* Pods_MyGithubUserSearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyGithubUserSearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E619842930ECFD69FAE99D79 /* Pods_MyGithubUserSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyGithubUserSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F04AC2670859E7C1403399D0 /* Pods-MyGithubUserSearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearchTests.release.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -171,7 +169,6 @@
 				3687DCEA227EAD62002DECAE /* Info.plist */,
 				BD5BC69723037BE7000A5306 /* TestAppDelegate.swift */,
 				BD6404D523038D2E0093E566 /* UserSearchReactorTest.swift */,
-				BD6404EE230392A40093E566 /* Organization+Equal.swift */,
 			);
 			path = MyGithubUserSearchTests;
 			sourceTree = "<group>";
@@ -511,6 +508,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReusableKit/ReusableKit.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
@@ -524,6 +522,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReusableKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
@@ -564,7 +563,6 @@
 			files = (
 				BD6404D623038D2E0093E566 /* UserSearchReactorTest.swift in Sources */,
 				BD6404DE23038EB30093E566 /* RxTestScheduler.swift in Sources */,
-				BD6404EF230392A40093E566 /* Organization+Equal.swift in Sources */,
 				BD6404E723038FF40093E566 /* ResourcesLoader.swift in Sources */,
 				3687DCE9227EAD62002DECAE /* MyGithubUserSearchTests.swift in Sources */,
 				BD6404E623038FF40093E566 /* MockNetworkRequestProtocol+Mocking.swift in Sources */,

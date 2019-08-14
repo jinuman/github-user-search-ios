@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxOptional
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

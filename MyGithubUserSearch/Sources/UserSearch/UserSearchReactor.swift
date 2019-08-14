@@ -36,7 +36,7 @@ class UserSearchReactor: Reactor {
         var query: String?
         var userItems = [UserItem]()
         var nextPage: Int?
-        var isLoading: Bool = false
+        var isLoading: Bool?
     }
     
     func mutate(action: UserSearchReactor.Action) -> Observable<UserSearchReactor.Mutation> {
@@ -58,8 +58,7 @@ class UserSearchReactor: Reactor {
                 ])
             
         case .loadNextPage:
-            guard
-                let nextPage = currentState.nextPage,
+            guard let nextPage = currentState.nextPage,
                 currentState.isLoading == false else { return .empty() }
             
             return Observable.concat([
@@ -75,26 +74,23 @@ class UserSearchReactor: Reactor {
     
     func reduce(state: UserSearchReactor.State, mutation: UserSearchReactor.Mutation) -> UserSearchReactor.State {
         // step 3: state change
+        var newState = state
         switch mutation {
         case .setQuery(let query):
-            var newState = state
             newState.query = query
             return newState
             
         case let .setUsers(users, nextPage):
-            var newState = state
             newState.userItems = users
             newState.nextPage = nextPage
             return newState
             
         case let .appendUsers(users, nextPage):
-            var newState = state
             newState.userItems.append(contentsOf: users)
             newState.nextPage = nextPage
             return newState
             
         case .setLoading(let isLoading):
-            var newState = state
             newState.isLoading = isLoading
             return newState
         }

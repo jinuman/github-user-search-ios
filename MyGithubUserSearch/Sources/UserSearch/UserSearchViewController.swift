@@ -154,8 +154,8 @@ extension UserSearchViewController: View {
         
         // Review: [사용성] 로딩이 보여지는 동안은 사용자 이벤트를 막아야 합니다.
         // https://github.com/start-rxswift/MVVMGithubTDD/blob/master/TddMVVMGithub/Views/LoadingIndicator.swift
-        reactor.state
-            .map { $0.isLoading }
+        reactor.state.map { $0.isLoading }
+            .filterNil()
             .bind(to: spinner.rx.isAnimating)
             .disposed(by: disposeBag)
         
