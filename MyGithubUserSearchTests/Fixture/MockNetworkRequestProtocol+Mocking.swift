@@ -37,7 +37,7 @@ extension MockNetworkRequest {
     func setUserItemsPaging(_ items: [[UserItem]]) -> [[UserItem]] {
         stub(self, block: { mock in
             for (index, item) in items.enumerated() {
-                when(mock.fetchUsers(with: any(), page: equal(to: index)))
+                when(mock.fetchUsers(with: any(), page: equal(to: index + 1)))
                     .then { _ in return Observable.just((item, index)) }
             }
         })

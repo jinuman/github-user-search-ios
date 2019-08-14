@@ -85,8 +85,8 @@ class UserSearchReactorTest: XCTestCase {
             XCTAssertEqual(events.count, 3)
             XCTAssertEqual(events, [
                 .next(0, expect[0]),
-                .next(0, expect[1]),
-                .next(0, expect[2])
+                .next(10, expect[1]),
+                .next(20, expect[2])
                 ])
         }
     }

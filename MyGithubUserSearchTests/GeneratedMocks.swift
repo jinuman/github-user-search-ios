@@ -1,4 +1,4 @@
-// MARK: - Mocks generated from file: MyGithubUserSearch/Sources/CodeReviewUtils/NetworkRequest.swift at 2019-08-14 05:14:22 +0000
+// MARK: - Mocks generated from file: MyGithubUserSearch/Sources/CodeReviewUtils/NetworkRequest.swift at 2019-08-14 05:16:19 +0000
 
 //
 //  NetworkRequest.swift
