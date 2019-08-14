@@ -43,6 +43,8 @@ class UserSearchReactor: Reactor {
         switch action {
         case .updateQuery(let query):
             return Observable.concat([
+                //Review: [사용성] 사용자에게 로딩을 보여줘야 합니다.
+//                Observable.just(Mutation.setLoading(true)),
                 // step 1: set current query
                 Observable.just(Mutation.setQuery(query)),
                 
@@ -51,7 +53,8 @@ class UserSearchReactor: Reactor {
                 // 지금의 목표는 TestCode를 짜기 위함
                 self.api.fetchUsers(with: query, page: 1)
                     .takeUntil(self.action.filter(isUpdateQueryAction))
-                    .map { Mutation.setUsers($0.0, nextPage: $0.1) }
+                    .map { Mutation.setUsers($0.0, nextPage: $0.1) },
+//                Observable.just(Mutation.setLoading(false)),
                 ])
             
         case .loadNextPage:

@@ -1,3 +1,4 @@
+
 //
 //  GithubService.swift
 //  MyGithubUserSearch
@@ -25,6 +26,7 @@ class GithubAPI {
     }
     
     func fetchUsers(with query: String?, page: Int) -> Observable<(repos: [UserItem], nextPage: Int?)> {
+        // Review: [사용성] fetchUsers 를 실패하면 사용자에게 알려줘야 합니다.
         let emptyResult: ([UserItem], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
         print("Current URL: \(url.absoluteString)")
@@ -72,7 +74,10 @@ class GithubAPI {
     func fetchOrganizations(with urlString: String?) -> Observable<[OrganizationItem]> {
         guard
             let urlString = urlString,
-            let url = URL(string: urlString) else { return .just([]) }
+            let url = URL(string: urlString) else {
+                // Review: [기본] 에러 처리 확실히 해야합니다.
+                return .just([])
+        }
         
         return Observable.create { observer in
             let task = self.session.dataTask(with: url) { (data, res, err) in

@@ -61,6 +61,8 @@ class UserSearchCellReactor: Reactor {
         case .setOrganizationItems(let organizations):
             var newState = state
             newState.organizationItems = organizations
+            
+            // Review: [사용성] organizations 가 없다면 사용자에게 알려야 합니다.
             let printMessage: String = newState.organizationItems.isEmpty
                 ? "No organizations"
                 : "State organization itmes: \(newState.organizationItems.count)"

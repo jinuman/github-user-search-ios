@@ -15,6 +15,8 @@ extension UIImageView {
         self.image = nil
         
         // check cache for image first
+        // Review: [성능] 최대 메모리의 제한을 두어야 합니다. Limit: 300MB
+        // 사실 구현은 저도 잘 못하겠습니다 ㅎㅎ
         if let cachedImage = imageCache[imageUrlString] {
             self.image = cachedImage
             return
@@ -25,6 +27,7 @@ extension UIImageView {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
+                // Review: [사용성] 이미지 다운로드 실패했을 경우 Placeholder 이미지를 보여줘야 합니다.
                 print(error.localizedDescription)
                 return
             }

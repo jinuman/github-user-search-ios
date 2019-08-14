@@ -147,6 +147,10 @@ extension UserSearchViewController: View {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
+        // Review: [사용성] 검색된 결과가 없다면 "검색 결과가 없습니다" View가 보여줘야 합니다.
+        
+        // Review: [사용성] 로딩이 보여지는 동안은 사용자 이벤트를 막아야 합니다.
+        // https://github.com/start-rxswift/MVVMGithubTDD/blob/master/TddMVVMGithub/Views/LoadingIndicator.swift
         reactor.state
             .map { $0.isLoading }
             .bind(to: spinner.rx.isAnimating)
