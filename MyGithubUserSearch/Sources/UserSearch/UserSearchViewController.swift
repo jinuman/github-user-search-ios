@@ -37,10 +37,8 @@ class UserSearchViewController: UIViewController {
     }()
     
     // Review: [성능] RxTableViewSectionedReloadDataSource 는 전체 item을 다시 로드하기 때문에 비효율적입니다.
-    // performBatchUpdates 사용하는 것이 좋습니다.
-    // Eugene W. Myers’s의 차이 알고리즘
+    // RxTableViewSectionedAnimatedDataSource 사용하는 것이 좋습니다.
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
-    
     private lazy var dataSource = UserDataSource(configureCell: { [weak githubAPI] (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
         guard let githubAPI = githubAPI else { return UITableViewCell() }
         let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
@@ -151,7 +149,7 @@ extension UserSearchViewController: View {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        // Review: [사용성] 맨 마지막 페이지에 도달하면 "마지막 페이지" 라는 것을 사용자에게 알려야 합니다.
+        // Review: [선택] 맨 마지막 페이지에 도달하면 "마지막 페이지" 라는 것을 사용자에게 알리는 것이 좋습니다.
         // Review: [사용성] 검색된 결과가 없다면 "검색 결과가 없습니다" View가 보여줘야 합니다.
         
         // Review: [사용성] 로딩이 보여지는 동안은 사용자 이벤트를 막아야 합니다.
