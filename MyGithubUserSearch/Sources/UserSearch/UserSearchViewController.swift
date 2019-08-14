@@ -36,6 +36,9 @@ class UserSearchViewController: UIViewController {
         return tv
     }()
     
+    // Review: [성능] RxTableViewSectionedReloadDataSource 는 전체 item을 다시 로드하기 때문에 비효율적입니다.
+    // performBatchUpdates 사용하는 것이 좋습니다.
+    // Eugene W. Myers’s의 차이 알고리즘
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
     
     private lazy var dataSource = UserDataSource(configureCell: { [weak githubAPI] (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
@@ -101,6 +104,7 @@ class UserSearchViewController: UIViewController {
             guard let idx = selectedIndexPaths.firstIndex(of: indexPath) else { return }
             selectedIndexPaths.remove(at: Int(idx))
         }
+        
         tableView.reloadData()
 //        print("## selectedIndexPath: \(selectedIndexPaths)")
     }
