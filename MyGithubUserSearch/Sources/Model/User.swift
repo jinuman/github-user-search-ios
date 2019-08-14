@@ -28,7 +28,7 @@ extension User: SectionModelType {
     }
 }
 
-struct UserItem: Decodable {
+struct UserItem: Decodable, Equatable {
     let username: String
     let score: Double
     let profileImageUrl: String

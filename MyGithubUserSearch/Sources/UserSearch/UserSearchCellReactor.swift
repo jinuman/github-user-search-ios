@@ -15,7 +15,10 @@ class UserSearchCellReactor: Reactor {
     
     let initialState: State
     
-    init(userItem: UserItem) {
+    private let api: NetworkRequest
+    
+    init(userItem: UserItem, api: NetworkRequest) {
+        self.api = api
         self.initialState = State(userItem: userItem)
     }
     
@@ -44,7 +47,7 @@ class UserSearchCellReactor: Reactor {
         switch action {
         case .updateOrganizationUrl(let urlString):
             return Observable.concat([
-                GithubAPI.fetchOrganizations(with: urlString)
+                self.api.fetchOrganizations(with: urlString)
                     .takeUntil(self.action.filter(isUpdateUrlAction))
                     .map { Mutation.setOrganizationItems($0) },
                 
@@ -58,6 +61,8 @@ class UserSearchCellReactor: Reactor {
         case .setOrganizationItems(let organizations):
             var newState = state
             newState.organizationItems = organizations
+            
+            // Review: [사용성] organizations 가 없다면 사용자에게 알려야 합니다.
             let printMessage: String = newState.organizationItems.isEmpty
                 ? "No organizations"
                 : "State organization itmes: \(newState.organizationItems.count)"

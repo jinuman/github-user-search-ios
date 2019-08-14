@@ -23,6 +23,20 @@
 		3687DD0A22802E11002DECAE /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DD0922802E11002DECAE /* UserSearchCell.swift */; };
 		3687DD0C22803737002DECAE /* UserSearchReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3687DD0B22803737002DECAE /* UserSearchReactor.swift */; };
 		9903C10116569632318FFD89 /* Pods_MyGithubUserSearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4323F4C3AAF8F13C262D901 /* Pods_MyGithubUserSearchTests.framework */; };
+		BD5BC69423037BBE000A5306 /* AssertMainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5BC69323037BBE000A5306 /* AssertMainThread.swift */; };
+		BD5BC69623037BCB000A5306 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5BC69523037BCB000A5306 /* main.swift */; };
+		BD5BC69823037BE7000A5306 /* TestAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5BC69723037BE7000A5306 /* TestAppDelegate.swift */; };
+		BD5BC69A23037C2A000A5306 /* HTTPLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5BC69923037C2A000A5306 /* HTTPLog.swift */; };
+		BD6404D623038D2E0093E566 /* UserSearchReactorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404D523038D2E0093E566 /* UserSearchReactorTest.swift */; };
+		BD6404D923038E180093E566 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404D823038E180093E566 /* NetworkRequest.swift */; };
+		BD6404DB23038E7B0093E566 /* RxSchedulerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404DA23038E7B0093E566 /* RxSchedulerType.swift */; };
+		BD6404DE23038EB30093E566 /* RxTestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404DD23038EB30093E566 /* RxTestScheduler.swift */; };
+		BD6404E023038F890093E566 /* GeneratedMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404DF23038F890093E566 /* GeneratedMocks.swift */; };
+		BD6404E623038FF40093E566 /* MockNetworkRequestProtocol+Mocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404E223038FF30093E566 /* MockNetworkRequestProtocol+Mocking.swift */; };
+		BD6404E723038FF40093E566 /* ResourcesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404E323038FF30093E566 /* ResourcesLoader.swift */; };
+		BD6404E923038FF40093E566 /* Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6404E523038FF30093E566 /* Fixture.swift */; };
+		BD6404EB2303917C0093E566 /* sample_user_item.json in Resources */ = {isa = PBXBuildFile; fileRef = BD6404EA2303917C0093E566 /* sample_user_item.json */; };
+		BD6404ED230391D20093E566 /* sample_organization.json in Resources */ = {isa = PBXBuildFile; fileRef = BD6404EC230391D20093E566 /* sample_organization.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +71,20 @@
 		48D21C2F0F8C2B764AFA1CEB /* Pods-MyGithubUserSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearch.release.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearch/Pods-MyGithubUserSearch.release.xcconfig"; sourceTree = "<group>"; };
 		48F7F1FE5A475C0183862C9D /* Pods-MyGithubUserSearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearchTests.debug.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5615257F8C47672A677CFA84 /* Pods-MyGithubUserSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearch.debug.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearch/Pods-MyGithubUserSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		BD5BC69323037BBE000A5306 /* AssertMainThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertMainThread.swift; sourceTree = "<group>"; };
+		BD5BC69523037BCB000A5306 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		BD5BC69723037BE7000A5306 /* TestAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppDelegate.swift; sourceTree = "<group>"; };
+		BD5BC69923037C2A000A5306 /* HTTPLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPLog.swift; sourceTree = "<group>"; };
+		BD6404D523038D2E0093E566 /* UserSearchReactorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchReactorTest.swift; sourceTree = "<group>"; };
+		BD6404D823038E180093E566 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
+		BD6404DA23038E7B0093E566 /* RxSchedulerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxSchedulerType.swift; sourceTree = "<group>"; };
+		BD6404DD23038EB30093E566 /* RxTestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTestScheduler.swift; sourceTree = "<group>"; };
+		BD6404DF23038F890093E566 /* GeneratedMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedMocks.swift; sourceTree = "<group>"; };
+		BD6404E223038FF30093E566 /* MockNetworkRequestProtocol+Mocking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MockNetworkRequestProtocol+Mocking.swift"; sourceTree = "<group>"; };
+		BD6404E323038FF30093E566 /* ResourcesLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourcesLoader.swift; sourceTree = "<group>"; };
+		BD6404E523038FF30093E566 /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
+		BD6404EA2303917C0093E566 /* sample_user_item.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample_user_item.json; sourceTree = "<group>"; };
+		BD6404EC230391D20093E566 /* sample_organization.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample_organization.json; sourceTree = "<group>"; };
 		C4323F4C3AAF8F13C262D901 /* Pods_MyGithubUserSearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyGithubUserSearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E619842930ECFD69FAE99D79 /* Pods_MyGithubUserSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyGithubUserSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F04AC2670859E7C1403399D0 /* Pods-MyGithubUserSearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyGithubUserSearchTests.release.xcconfig"; path = "Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -134,8 +162,13 @@
 		3687DCE7227EAD62002DECAE /* MyGithubUserSearchTests */ = {
 			isa = PBXGroup;
 			children = (
+				BD6404E123038FF30093E566 /* Fixture */,
+				BD6404DF23038F890093E566 /* GeneratedMocks.swift */,
+				BD6404DC23038E9A0093E566 /* Utils */,
 				3687DCE8227EAD62002DECAE /* MyGithubUserSearchTests.swift */,
 				3687DCEA227EAD62002DECAE /* Info.plist */,
+				BD5BC69723037BE7000A5306 /* TestAppDelegate.swift */,
+				BD6404D523038D2E0093E566 /* UserSearchReactorTest.swift */,
 			);
 			path = MyGithubUserSearchTests;
 			sourceTree = "<group>";
@@ -153,6 +186,7 @@
 		3687DCFB22802130002DECAE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				BD5BC69223037BB0000A5306 /* CodeReviewUtils */,
 				3687DD0622802DBA002DECAE /* Shared */,
 				3687DD0722802DCD002DECAE /* Model */,
 				3687DD0822802DF4002DECAE /* UserSearch */,
@@ -192,6 +226,38 @@
 			path = UserSearch;
 			sourceTree = "<group>";
 		};
+		BD5BC69223037BB0000A5306 /* CodeReviewUtils */ = {
+			isa = PBXGroup;
+			children = (
+				BD5BC69323037BBE000A5306 /* AssertMainThread.swift */,
+				BD5BC69523037BCB000A5306 /* main.swift */,
+				BD5BC69923037C2A000A5306 /* HTTPLog.swift */,
+				BD6404DA23038E7B0093E566 /* RxSchedulerType.swift */,
+				BD6404D823038E180093E566 /* NetworkRequest.swift */,
+			);
+			path = CodeReviewUtils;
+			sourceTree = "<group>";
+		};
+		BD6404DC23038E9A0093E566 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BD6404DD23038EB30093E566 /* RxTestScheduler.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		BD6404E123038FF30093E566 /* Fixture */ = {
+			isa = PBXGroup;
+			children = (
+				BD6404E223038FF30093E566 /* MockNetworkRequestProtocol+Mocking.swift */,
+				BD6404E323038FF30093E566 /* ResourcesLoader.swift */,
+				BD6404E523038FF30093E566 /* Fixture.swift */,
+				BD6404EA2303917C0093E566 /* sample_user_item.json */,
+				BD6404EC230391D20093E566 /* sample_organization.json */,
+			);
+			path = Fixture;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -204,6 +270,8 @@
 				3687DCCD227EAD60002DECAE /* Frameworks */,
 				3687DCCE227EAD60002DECAE /* Resources */,
 				DD2B45D2B37520482CD6F3F1 /* [CP] Embed Pods Frameworks */,
+				BD6404CF23037D420093E566 /* Review */,
+				BD6404D42303858A0093E566 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -222,6 +290,8 @@
 				3687DCE0227EAD62002DECAE /* Sources */,
 				3687DCE1227EAD62002DECAE /* Frameworks */,
 				3687DCE2227EAD62002DECAE /* Resources */,
+				0C715AFBE624D5ADBE206898 /* [CP] Embed Pods Frameworks */,
+				BD6404D723038DEC0093E566 /* [Mock] Cuckoo */,
 			);
 			buildRules = (
 			);
@@ -285,12 +355,46 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD6404EB2303917C0093E566 /* sample_user_item.json in Resources */,
+				BD6404ED230391D20093E566 /* sample_organization.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0C715AFBE624D5ADBE206898 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Cuckoo/Cuckoo.framework",
+				"${BUILT_PRODUCTS_DIR}/RxExpect/RxExpect.framework",
+				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cuckoo.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxExpect.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2C66CA35588801918EC26BDF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,6 +439,60 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BD6404CF23037D420093E566 /* Review */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Review;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nTAGS=\"Review:\"\nERRORTAG=\"ERROR:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"\n";
+		};
+		BD6404D42303858A0093E566 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		BD6404D723038DEC0093E566 /* [Mock] Cuckoo */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Mock] Cuckoo";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nOUTPUT_FILE=\"$PROJECT_DIR/$TARGET_NAME/GeneratedMocks.swift\"\n\necho \"Generated Mocks File = $OUTPUT_FILE\"\n\nINPUT_DIR=\"${PROJECT_DIR}/MyGithubUserSearch\"\n\necho \"Mocks Input Directory = ${INPUT_DIR}\"\n\n\"${PODS_ROOT}/Cuckoo/run\" generate --testable \"$PROJECT_NAME\" \\\n--output \"$OUTPUT_FILE\" \\\n\"$INPUT_DIR/Sources/CodeReviewUtils/NetworkRequest.swift\" \\\n\n";
+		};
 		DD2B45D2B37520482CD6F3F1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -350,6 +508,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReusableKit/ReusableKit.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
@@ -363,6 +522,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReusableKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
@@ -379,13 +539,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				361A3B2A228180B500E436B2 /* OrganizationCell.swift in Sources */,
+				BD5BC69623037BCB000A5306 /* main.swift in Sources */,
 				3687DD0122802A1C002DECAE /* Constants.swift in Sources */,
 				361A3B2C2281888E00E436B2 /* Organization.swift in Sources */,
+				BD6404D923038E180093E566 /* NetworkRequest.swift in Sources */,
 				3687DCD6227EAD60002DECAE /* UserSearchViewController.swift in Sources */,
+				BD5BC69423037BBE000A5306 /* AssertMainThread.swift in Sources */,
 				3687DCD4227EAD60002DECAE /* AppDelegate.swift in Sources */,
 				3687DCFF2280236F002DECAE /* GithubAPI.swift in Sources */,
 				361A3B2E2281ACBD00E436B2 /* UserSearchCellReactor.swift in Sources */,
 				3687DD0522802B8E002DECAE /* UIKit+MyGithubUserSearch.swift in Sources */,
+				BD6404DB23038E7B0093E566 /* RxSchedulerType.swift in Sources */,
+				BD5BC69A23037C2A000A5306 /* HTTPLog.swift in Sources */,
 				3687DD0A22802E11002DECAE /* UserSearchCell.swift in Sources */,
 				3687DCFD228021D1002DECAE /* User.swift in Sources */,
 				3687DD0C22803737002DECAE /* UserSearchReactor.swift in Sources */,
@@ -396,7 +561,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD6404D623038D2E0093E566 /* UserSearchReactorTest.swift in Sources */,
+				BD6404DE23038EB30093E566 /* RxTestScheduler.swift in Sources */,
+				BD6404E723038FF40093E566 /* ResourcesLoader.swift in Sources */,
 				3687DCE9227EAD62002DECAE /* MyGithubUserSearchTests.swift in Sources */,
+				BD6404E623038FF40093E566 /* MockNetworkRequestProtocol+Mocking.swift in Sources */,
+				BD5BC69823037BE7000A5306 /* TestAppDelegate.swift in Sources */,
+				BD6404E023038F890093E566 /* GeneratedMocks.swift in Sources */,
+				BD6404E923038FF40093E566 /* Fixture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

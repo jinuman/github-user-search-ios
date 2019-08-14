@@ -11,13 +11,15 @@ target 'MyGithubUserSearch' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
-  
+  pod 'RxOptional'
   pod 'ReusableKit'
   pod 'Kingfisher'
-
+  pod 'SwiftLint'
   target 'MyGithubUserSearchTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'RxExpect'
+    pod 'Cuckoo'
   end
 
 end

@@ -24,6 +24,9 @@ class UserSearchCell: UITableViewCell {
     private let tapGestureByImage: UITapGestureRecognizer = UITapGestureRecognizer()
     private let tapGestureByLabel: UITapGestureRecognizer = UITapGestureRecognizer()
     
+    deinit {
+        print("call deinit: UserSearchCell")
+    }
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -38,6 +41,9 @@ class UserSearchCell: UITableViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .black
         label.isUserInteractionEnabled = true
+        // Review: [경고] 순환참조가 발생할 수 있습니다.
+        // https://docs.swift.org/swift-book/LanguageGuide/AutomaticReferenceCounting.html#ID56
+        // class HTMLElement 코드를 참조하였습니다.
         label.addGestureRecognizer(tapGestureByLabel)
         return label
     }()

@@ -36,17 +36,31 @@ class UserSearchViewController: UIViewController {
         return tv
     }()
     
+    // Review: [성능] RxTableViewSectionedReloadDataSource 는 전체 item을 다시 로드하기 때문에 비효율적입니다.
+    // RxTableViewSectionedAnimatedDataSource 사용하는 것이 좋습니다.
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
-    
-    private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
-        
+    private lazy var dataSource = UserDataSource(configureCell: { [weak githubAPI] (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
+        guard let githubAPI = githubAPI else { return UITableViewCell() }
         let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
-        cell.reactor = UserSearchCellReactor(userItem: userItem)
+        cell.reactor = UserSearchCellReactor(userItem: userItem, api: githubAPI)
         cell.didTapCellItem = self.didTapCellItem
         return cell
     })
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
+    
+    private var githubAPI: NetworkRequest
+    
+    init(reactor: UserSearchReactor, api: NetworkRequest) {
+        // Review: [Refactoring] AppDelegate에서 reactor를 설정하는 것보다 안쪽에서 하는 것이 코드 효율성이 좋습니다.
+        defer { self.reactor = reactor }
+        self.githubAPI = api
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK:- Life cycle methods
     override func viewDidLoad() {
@@ -88,13 +102,14 @@ class UserSearchViewController: UIViewController {
             guard let idx = selectedIndexPaths.firstIndex(of: indexPath) else { return }
             selectedIndexPaths.remove(at: Int(idx))
         }
+        
         tableView.reloadData()
 //        print("## selectedIndexPath: \(selectedIndexPaths)")
     }
     
 }
 
-extension UserSearchViewController: ReactorKit.View {
+extension UserSearchViewController: View {
     func bind(reactor: UserSearchReactor) {
         // DataSource
         tableView.rx.setDelegate(self)
@@ -125,12 +140,22 @@ extension UserSearchViewController: ReactorKit.View {
         reactor.state
             .map { $0.userItems }
             .map { [User(userItems: $0)] }
+            // Review: [사용성] 검색된 결과와 동시에 키보드가 내려가야 합니다.
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.userSearchBar.resignFirstResponder()
+            })
             .observeOn(MainScheduler.asyncInstance)
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        reactor.state
-            .map { $0.isLoading }
+        // Review: [선택] 맨 마지막 페이지에 도달하면 "마지막 페이지" 라는 것을 사용자에게 알리는 것이 좋습니다.
+        // Review: [사용성] 검색된 결과가 없다면 "검색 결과가 없습니다" View가 보여줘야 합니다.
+        
+        // Review: [사용성] 로딩이 보여지는 동안은 사용자 이벤트를 막아야 합니다.
+        // https://github.com/start-rxswift/MVVMGithubTDD/blob/master/TddMVVMGithub/Views/LoadingIndicator.swift
+        reactor.state.map { $0.isLoading }
+            .filterNil()
             .bind(to: spinner.rx.isAnimating)
             .disposed(by: disposeBag)
         
