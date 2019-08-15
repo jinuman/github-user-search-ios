@@ -36,7 +36,7 @@ class UserSearchReactor: Reactor {
         var query: String?
         var userItems = [UserItem]()
         var nextPage: Int?
-        var isLoading: Bool?
+        var isLoading: Bool? = false
     }
     
     func mutate(action: UserSearchReactor.Action) -> Observable<UserSearchReactor.Mutation> {
