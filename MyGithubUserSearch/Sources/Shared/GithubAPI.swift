@@ -25,6 +25,9 @@ class GithubAPI: NetworkRequest {
         return URL(string: "https://api.github.com/search/users?q=\(query)&page=\(page)")
     }
     
+    // Review: [Refactoring] UserItem 은 Service에서 return 하는것이 적절하지 않습니다.
+    // 순전히 Github Response 데이터를 return 하는 것이 좋습니다.
+    // ViewModel 에서 Mapping 작업을 해야 합니다.
     func fetchUsers(with query: String?, page: Int) -> Observable<(repos: [UserItem], nextPage: Int?)> {
         // Review: [사용성] fetchUsers 를 실패하면 사용자에게 알려줘야 합니다.
         let emptyResult: ([UserItem], Int?) = ([], nil)
@@ -54,9 +57,7 @@ class GithubAPI: NetworkRequest {
                 
                 do {
                     let user = try JSONDecoder().decode(User.self, from: data)
-                    let nextPage = user.userItems.isEmpty
-                        ? nil
-                        : page + 1
+                    let nextPage = user.userItems.isEmpty ? nil : page + 1
                     print("userItems: \(user.userItems.count), nextPage: \(nextPage ?? -1)")
                     observer.onNext((user.userItems, nextPage))
                     
