@@ -26,7 +26,7 @@ DEPENDENCIES:
   - RxSwift
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Differentiator
     - Kingfisher
     - ReactorKit
@@ -48,4 +48,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 95f744e637a90af1b9b782026d24dd3efe8a58df
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.8.4
