@@ -38,12 +38,12 @@ class UserSearchViewController: UIViewController {
     
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
     
-    private lazy var dataSource = UserDataSource(configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
-        
-        let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
-        cell.reactor = UserSearchCellReactor(userItem: userItem)
-        cell.didTapCellItem = self.didTapCellItem
-        return cell
+    private lazy var dataSource = UserDataSource(
+        configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
+            let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
+            cell.reactor = UserSearchCellReactor(userItem: userItem)
+            cell.didTapCellItem = self.didTapCellItem
+            return cell
     })
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
@@ -67,10 +67,10 @@ class UserSearchViewController: UIViewController {
         }
         
         userSearchBar.anchor(top: navBar.topAnchor,
-                         leading: navBar.leadingAnchor,
-                         bottom: navBar.bottomAnchor,
-                         trailing: navBar.trailingAnchor,
-                         padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
+                             leading: navBar.leadingAnchor,
+                             bottom: navBar.bottomAnchor,
+                             trailing: navBar.trailingAnchor,
+                             padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
         
         tableView.fillSuperview()
         
@@ -103,7 +103,7 @@ extension UserSearchViewController: ReactorKit.View {
         // Action binding: View -> Reactor(Action)
         userSearchBar.rx.text
             .distinctUntilChanged()
-            .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .map { Reactor.Action.updateQuery($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
