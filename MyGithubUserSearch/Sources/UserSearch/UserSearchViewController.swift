@@ -36,6 +36,7 @@ class UserSearchViewController: UIViewController {
         return tv
     }()
     
+    typealias some = RxTableViewSectionedAnimatedDataSource
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
     
     private lazy var dataSource = UserDataSource(

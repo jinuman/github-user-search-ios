@@ -222,6 +222,7 @@
 				3687DCE0227EAD62002DECAE /* Sources */,
 				3687DCE1227EAD62002DECAE /* Frameworks */,
 				3687DCE2227EAD62002DECAE /* Resources */,
+				ED5B0D2C71D253AA86AE2243 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -350,6 +351,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyGithubUserSearch/Pods-MyGithubUserSearch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED5B0D2C71D253AA86AE2243 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyGithubUserSearchTests/Pods-MyGithubUserSearchTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

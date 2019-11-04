@@ -6,18 +6,31 @@ target 'MyGithubUserSearch' do
   use_frameworks!
 
   # Pods for MyGithubUserSearch
-  pod 'ReactorKit'
 
+  # Auto-layout
+  pod 'SnapKit'
+
+  # Rx
+  pod 'ReactorKit'
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
+
+  # Logging
+  pod 'SwiftyBeaver'
   
+  # Others
+  pod 'SwiftLint'
   pod 'ReusableKit'
   pod 'Kingfisher'
 
   target 'MyGithubUserSearchTests' do
     inherit! :search_paths
     # Pods for testing
+
+    pod 'RxExpect'
+    pod 'Cuckoo'
+    
   end
 
 end
