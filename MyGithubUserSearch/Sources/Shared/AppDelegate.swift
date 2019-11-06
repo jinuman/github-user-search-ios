@@ -12,23 +12,24 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.backgroundColor = .white
         window.makeKeyAndVisible()
         
-        let userSearchVC = UserSearchViewController()
-        userSearchVC.reactor = UserSearchReactor()
+        let userSearchViewController = UserSearchViewController()
+        userSearchViewController.reactor = UserSearchReactor()
         
-        let navigationController = UINavigationController(rootViewController: userSearchVC)
+        let navigationController = UINavigationController(
+            rootViewController: userSearchViewController)
+        
         window.rootViewController = navigationController
         
         self.window = window
+        
         return true
     }
 
 }
-
