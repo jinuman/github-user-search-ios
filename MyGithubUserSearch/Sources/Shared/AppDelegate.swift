@@ -8,16 +8,24 @@
 
 import UIKit
 
+import SwiftyBeaver
+
+let log = SwiftyBeaver.self
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
+        -> Bool
+    {
+        log.addDestination(ConsoleDestination())
         
+        // MARK: Set Window
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.backgroundColor = .white
-        window.makeKeyAndVisible()
         
         let userSearchViewController = UserSearchViewController()
         userSearchViewController.reactor = UserSearchReactor()
@@ -26,10 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootViewController: userSearchViewController)
         
         window.rootViewController = navigationController
-        
+        window.makeKeyAndVisible()
         self.window = window
         
         return true
     }
-
+    
 }
