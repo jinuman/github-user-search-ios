@@ -6,6 +6,9 @@ analyzer_rules:
   - unused_private_declaration
 
 disabled_rules:
+  # Leared
+  - opening_brace
+
   - identifier_name
   - todo
   - literal_expression_end_indentation
