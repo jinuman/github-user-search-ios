@@ -102,6 +102,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		360F8CE723CAD07000921C09 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3687DD0422802B8E002DECAE /* UIKit+MyGithubUserSearch.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		360F8CE823CAD0D700921C09 /* APIs */ = {
+			isa = PBXGroup;
+			children = (
+				3687DCFE2280236F002DECAE /* GithubAPI.swift */,
+			);
+			path = APIs;
+			sourceTree = "<group>";
+		};
 		3687DCC7227EAD5F002DECAE = {
 			isa = PBXGroup;
 			children = (
@@ -154,6 +170,8 @@
 			isa = PBXGroup;
 			children = (
 				3687DD0622802DBA002DECAE /* Shared */,
+				360F8CE823CAD0D700921C09 /* APIs */,
+				360F8CE723CAD07000921C09 /* Extensions */,
 				3687DD0722802DCD002DECAE /* Model */,
 				3687DD0822802DF4002DECAE /* UserSearch */,
 			);
@@ -164,9 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				3687DCD3227EAD60002DECAE /* AppDelegate.swift */,
-				3687DD0422802B8E002DECAE /* UIKit+MyGithubUserSearch.swift */,
 				3687DD0022802A1C002DECAE /* Constants.swift */,
-				3687DCFE2280236F002DECAE /* GithubAPI.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";

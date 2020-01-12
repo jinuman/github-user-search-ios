@@ -8,7 +8,7 @@
 
 import UIKit
 
-var imageCache = [String : UIImage]()
+var imageCache = [String: UIImage]()
 
 extension UIImageView {
     func loadImageUsingCache(with imageUrlString: String) {
