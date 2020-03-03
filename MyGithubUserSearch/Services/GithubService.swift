@@ -11,6 +11,21 @@ import Foundation
 import RxSwift
 
 class GithubService {
+    
+    private enum GithubServiceError: Error {
+        case responseError
+        case limitExeededError
+        
+        var errorMessage: String {
+            switch self {
+            case .limitExeededError:
+                return "Github API rate limit exceeded. Wait for 60 seconds and try again."
+            default:
+                return "Error occured."
+            }
+        }
+    }
+    
     static func url(
         for query: String?,
         page: Int)
@@ -25,7 +40,7 @@ class GithubService {
     static func fetchUsers(
         with query: String?,
         page: Int)
-        -> Observable<(repos: [UserInfo], nextPage: Int?)>
+        -> Observable<([UserInfo], nextPage: Int?)>
     {
         let emptyResult: ([UserInfo], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
@@ -45,10 +60,10 @@ class GithubService {
                 {
                     log.error("Server returned an error")
                     if statusCode == 403 {
-                        log.error(GithubAPIError.limitExeededError.errorMessage)
-                        observer.onError(GithubAPIError.limitExeededError)
+                        log.error(GithubServiceError.limitExeededError.errorMessage)
+                        observer.onError(GithubServiceError.limitExeededError)
                     }
-                    observer.onError(GithubAPIError.responseError)
+                    observer.onError(GithubServiceError.responseError)
                     return
                 }
                 
@@ -70,7 +85,9 @@ class GithubService {
             task.resume()
             
             return Disposables.create { task.cancel() }
-            }.catchErrorJustReturn(emptyResult)
+        
+        }
+        .catchErrorJustReturn(emptyResult)
     }
     
     static func fetchOrganizations(with urlString: String?)
@@ -104,19 +121,5 @@ class GithubService {
             return Disposables.create { task.cancel() }
             }
             .catchErrorJustReturn([])
-    }
-}
-
-enum GithubAPIError: Error {
-    case responseError
-    case limitExeededError
-    
-    var errorMessage: String {
-        switch self {
-        case .limitExeededError:
-            return "Github API rate limit exceeded. Wait for 60 seconds and try again."
-        default:
-            return "Error occured"
-        }
     }
 }

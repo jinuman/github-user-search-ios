@@ -7,21 +7,8 @@
 //
 
 import Foundation
+
 import RxDataSources
-
-extension UserSectionModel: SectionModelType {
-    
-    typealias Item = UserInfo
-    
-    init(original: UserSectionModel, items: [Item]) {
-        self = original
-        self.items = items
-    }
-}
-
-struct UserSectionModel {
-    var items: [Item]
-}
 
 struct SearchResult: Decodable {
     var items: [UserInfo]
@@ -39,4 +26,18 @@ struct UserInfo: Decodable {
         case profileImageUrl = "avatar_url"
         case organizationsUrl = "organizations_url"
     }
+}
+
+extension UserSectionModel: SectionModelType {
+    
+    typealias Item = UserInfo
+    
+    init(original: UserSectionModel, items: [Item]) {
+        self = original
+        self.items = items
+    }
+}
+
+struct UserSectionModel {
+    var items: [Item]
 }
