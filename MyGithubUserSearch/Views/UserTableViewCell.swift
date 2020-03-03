@@ -84,17 +84,23 @@ class UserTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods
-    
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         let inset: CGFloat = Metric.edgeInset
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: inset / 2, left: inset, bottom: inset / 2, right: inset))
+        self.contentView.frame = self.contentView.frame.inset(
+            by: UIEdgeInsets(top: inset / 2, left: inset, bottom: inset / 2, right: inset)
+        )
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.profileImageView.image = nil
+        self.usernameLabel.text = nil
+        self.scoreLabel.text = nil
     }
+    
+    // MARK: - Methods
     
     private func initializeLayout() {
         let stackView =  UIStackView(arrangedSubviews: [
@@ -105,7 +111,7 @@ class UserTableViewCell: UITableViewCell {
         stackView.distribution = .fillEqually
         stackView.spacing = Metric.contentSpacing
         
-        self.addSubviews([
+        self.contentView.addSubviews([
             self.profileImageView,
             stackView,
             self.organizationCollectionView

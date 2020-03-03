@@ -143,7 +143,7 @@ class UserSearchViewController: UIViewController, View {
         }
         
         self.userTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(10)
+            $0.edges.equalToSuperview()
         }
         
         self.spinner.snp.makeConstraints {
@@ -171,7 +171,7 @@ class UserSearchViewController: UIViewController, View {
 extension UserSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let height: CGFloat = selectedIndexPaths.contains(indexPath)
+        let height: CGFloat = self.selectedIndexPaths.contains(indexPath)
         ? Metric.profileImageSize.width + Metric.edgeInset + Metric.orgImageSize.width + Metric.orgVerticalSpacing
         : Metric.profileImageSize.width + Metric.edgeInset + Metric.orgVerticalSpacing
         
