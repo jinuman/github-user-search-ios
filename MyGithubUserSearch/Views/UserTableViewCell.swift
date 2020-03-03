@@ -12,14 +12,14 @@ import RxCocoa
 import RxDataSources
 import ReactorKit
 
-class UserTableViewCell: UITableViewCell {
+class UserTableViewCell: UITableViewCell, View {
     
-    var disposeBag: DisposeBag = DisposeBag()
+    typealias Reactor = UserCellReactor
     
-    var didTapCellItem: ((Bool, UITableViewCell) -> ())?
-    private var isTapped: Bool = false
+    // MARK: - Properties
     
-    // MARK:- Cell screen properties
+    // MARK: UI
+    
     private let tapGestureByImage: UITapGestureRecognizer = UITapGestureRecognizer()
     private let tapGestureByLabel: UITapGestureRecognizer = UITapGestureRecognizer()
     
@@ -49,7 +49,7 @@ class UserTableViewCell: UITableViewCell {
         return label
     }()
     
-    typealias OrganizationDataSource = RxCollectionViewSectionedReloadDataSource<Organization>
+    typealias OrganizationDataSource = RxCollectionViewSectionedReloadDataSource<OrganizationSectionModel>
     
     private let dataSource = OrganizationDataSource(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
@@ -71,6 +71,13 @@ class UserTableViewCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
+    
+    // MARK: General
+    
+    var disposeBag: DisposeBag = DisposeBag()
+    
+    var didTapCellItem: ((Bool, UITableViewCell) -> ())?
+    private var isTapped: Bool = false
     
     // MARK: - Initializing
     
@@ -98,6 +105,51 @@ class UserTableViewCell: UITableViewCell {
         self.profileImageView.image = nil
         self.usernameLabel.text = nil
         self.scoreLabel.text = nil
+        
+//        self.reactor = nil
+//        self.disposeBag = DisposeBag()
+    }
+    
+    // MARK: - Binding
+    
+    func bind(reactor: UserCellReactor) {
+        self.setupCell(with: reactor)
+        
+        self.organizationCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        // Action Binding
+        Observable.of(self.tapGestureByImage.rx.event, self.tapGestureByLabel.rx.event)
+            .merge()
+            .withLatestFrom(reactor.state)
+            .map { $0.isTapped }
+            .filter { $0 == false }
+            .map { _ in reactor.currentState.userInfo.organizationsUrl}
+            .map { Reactor.Action.updateOrganizationUrl($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        // State Binding
+        reactor.state
+            .map { $0.organizationItems }
+            .distinctUntilChanged()
+            .filter { $0.isEmpty == false }
+            .map { [OrganizationSectionModel(items: $0)] }
+            .observeOn(MainScheduler.asyncInstance)
+            .bind(to: self.organizationCollectionView.rx.items(dataSource: self.dataSource))
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.organizationItems }
+            .filter { !$0.isEmpty }
+            .withLatestFrom(reactor.state)
+            .map { $0.isTapped }
+            .subscribe(onNext: { [weak self] isTapped in
+                guard let `self` = self else { return }
+                self.didTapCellItem?(isTapped, self)
+                self.isTapped = isTapped
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Methods
@@ -133,57 +185,17 @@ class UserTableViewCell: UITableViewCell {
         }
     }
     
-    private func fillupCell(with reactor: UserCellReactor) {
-        let userItem: UserInfo = reactor.currentState.userItem
+    private func setupCell(with reactor: UserCellReactor) {
+        let userInfo: UserInfo = reactor.currentState.userInfo
         
-        guard let profileImageUrl = URL(string: userItem.profileImageUrl) else { return }
+        guard let profileImageUrl = URL(string: userInfo.profileImageUrl) else { return }
+        
+        #warning("뭔가 개선이 필요하다..너무 많이 불린다.")
+        log.debugPrint(profileImageUrl)
         self.profileImageView.setImage(with: profileImageUrl)
-        self.usernameLabel.text = userItem.username
-        let scoreText: String = "score: \(userItem.score.description)"
+        self.usernameLabel.text = userInfo.username
+        let scoreText: String = "score: \(userInfo.score.description)"
         self.scoreLabel.text = scoreText
-    }
-}
-
-extension UserTableViewCell: ReactorKit.View {
-    func bind(reactor: UserCellReactor) {
-        self.fillupCell(with: reactor)
-        
-        // DataSource
-        organizationCollectionView.rx.setDelegate(self)
-            .disposed(by: disposeBag)
-        
-        // Action Binding
-        Observable.of(tapGestureByImage.rx.event, tapGestureByLabel.rx.event)
-            .merge()
-            .withLatestFrom(reactor.state)
-            .map { $0.isTapped }
-            .filter { $0 == false }
-            .map { _ in reactor.currentState.userItem.organizationsUrl}
-            .map { Reactor.Action.updateOrganizationUrl($0) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        // State Binding
-        reactor.state
-            .map { $0.organizationItems }
-            .distinctUntilChanged()
-            .filter { $0.isEmpty == false }
-            .map { [Organization(organizationItems: $0)] }
-            .observeOn(MainScheduler.asyncInstance)
-            .bind(to: organizationCollectionView.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
-        
-        reactor.state
-            .map { $0.organizationItems }
-            .filter { $0.isEmpty == false }  // If selected user has organization, send down
-            .withLatestFrom(reactor.state)
-            .map { $0.isTapped }
-            .subscribe(onNext: { [weak self] isTapped in
-                guard let self = self else { return }
-                self.didTapCellItem?(isTapped, self)
-                self.isTapped = isTapped
-            })
-            .disposed(by: disposeBag)
     }
 }
 

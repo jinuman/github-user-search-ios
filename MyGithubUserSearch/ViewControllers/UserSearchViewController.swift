@@ -39,9 +39,9 @@ class UserSearchViewController: UIViewController, View {
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<UserSectionModel>
     
     private lazy var dataSource = UserDataSource(
-        configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
+        configureCell: { (dataSource, tableView, indexPath, item) -> UITableViewCell in
             let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
-            cell.reactor = UserCellReactor(userItem: userItem)
+            cell.reactor = UserCellReactor(userInfo: item)
             cell.didTapCellItem = self.didTapCellItem
             return cell
     })
@@ -53,7 +53,6 @@ class UserSearchViewController: UIViewController, View {
     var disposeBag: DisposeBag = DisposeBag()
     
     private var selectedIndexPaths = [IndexPath]()
-    
     
     // MARK: - Life cycle
     
@@ -172,13 +171,15 @@ class UserSearchViewController: UIViewController, View {
 // MARK: - Extensions
 
 extension UserSearchViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
+
         let height: CGFloat = self.selectedIndexPaths.contains(indexPath)
-        ? Metric.profileImageSize.width + Metric.edgeInset + Metric.orgImageSize.width + Metric.orgVerticalSpacing
-        : Metric.profileImageSize.width + Metric.edgeInset + Metric.orgVerticalSpacing
-        
+            ? Metric.profileImageSize.width + Metric.edgeInset + Metric.orgImageSize.width + Metric.orgVerticalSpacing
+            : Metric.profileImageSize.width + Metric.edgeInset + Metric.orgVerticalSpacing
+
         return height
     }
+    
 }
 

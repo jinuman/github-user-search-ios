@@ -91,7 +91,7 @@ class GithubService {
     }
     
     static func fetchOrganizations(with urlString: String?)
-        -> Observable<[OrganizationItem]> {
+        -> Observable<[OrganizationInfo]> {
         guard let urlString = urlString,
             let url = URL(string: urlString) else { return .just([]) }
         
@@ -106,7 +106,7 @@ class GithubService {
                 guard let data = data else { return }
                 
                 do {
-                    let organizations = try JSONDecoder().decode([OrganizationItem].self, from: data)
+                    let organizations = try JSONDecoder().decode([OrganizationInfo].self, from: data)
                     print("Found organizations: \(organizations.count)")
                     observer.onNext(organizations)
                     

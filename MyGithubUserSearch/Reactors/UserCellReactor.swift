@@ -15,8 +15,8 @@ class UserCellReactor: Reactor {
     
     let initialState: State
     
-    init(userItem: UserInfo) {
-        self.initialState = State(userItem: userItem)
+    init(userInfo: UserInfo) {
+        self.initialState = State(userInfo: userInfo)
     }
     
     enum Action {
@@ -24,17 +24,17 @@ class UserCellReactor: Reactor {
     }
     
     enum Mutation {
-        case setOrganizationItems([OrganizationItem])
+        case setOrganizationItems([OrganizationInfo])
         case setIsTapped(Bool)
     }
     
     struct State {
-        let userItem: UserInfo
-        var organizationItems: [OrganizationItem]
+        let userInfo: UserInfo
+        var organizationItems: [OrganizationInfo]
         var isTapped: Bool = false
         
-        init(userItem: UserInfo, organizationItems: [OrganizationItem] = [], isTapped: Bool = false) {
-            self.userItem = userItem
+        init(userInfo: UserInfo, organizationItems: [OrganizationInfo] = [], isTapped: Bool = false) {
+            self.userInfo = userInfo
             self.organizationItems = organizationItems
             self.isTapped = isTapped
         }
