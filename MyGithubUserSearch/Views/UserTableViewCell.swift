@@ -133,7 +133,7 @@ class UserTableViewCell: UITableViewCell {
         }
     }
     
-    private func fillupCell(with reactor: UserSearchCellReactor) {
+    private func fillupCell(with reactor: UserCellReactor) {
         let userItem: UserItem = reactor.currentState.userItem
         
         guard let profileImageUrl = URL(string: userItem.profileImageUrl) else { return }
@@ -145,7 +145,7 @@ class UserTableViewCell: UITableViewCell {
 }
 
 extension UserTableViewCell: ReactorKit.View {
-    func bind(reactor: UserSearchCellReactor) {
+    func bind(reactor: UserCellReactor) {
         self.fillupCell(with: reactor)
         
         // DataSource

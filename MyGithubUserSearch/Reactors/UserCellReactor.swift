@@ -1,5 +1,5 @@
 //
-//  UserSearchCellReactor.swift
+//  UserCellReactor.swift
 //  MyGithubUserSearch
 //
 //  Created by Jinwoo Kim on 07/05/2019.
@@ -11,7 +11,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-class UserSearchCellReactor: Reactor {
+class UserCellReactor: Reactor {
     
     let initialState: State
     
@@ -40,11 +40,11 @@ class UserSearchCellReactor: Reactor {
         }
     }
     
-    func mutate(action: UserSearchCellReactor.Action) -> Observable<UserSearchCellReactor.Mutation> {
+    func mutate(action: UserCellReactor.Action) -> Observable<UserCellReactor.Mutation> {
         switch action {
         case .updateOrganizationUrl(let urlString):
             return Observable.concat([
-                GithubAPI.fetchOrganizations(with: urlString)
+                GithubService.fetchOrganizations(with: urlString)
                     .takeUntil(self.action.filter(isUpdateUrlAction))
                     .map { Mutation.setOrganizationItems($0) },
                 
@@ -53,7 +53,7 @@ class UserSearchCellReactor: Reactor {
         }
     }
     
-    func reduce(state: UserSearchCellReactor.State, mutation: UserSearchCellReactor.Mutation) -> UserSearchCellReactor.State {
+    func reduce(state: UserCellReactor.State, mutation: UserCellReactor.Mutation) -> UserCellReactor.State {
         switch mutation {
         case .setOrganizationItems(let organizations):
             var newState = state

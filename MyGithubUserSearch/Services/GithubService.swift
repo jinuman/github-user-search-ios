@@ -10,7 +10,7 @@ import Foundation
 
 import RxSwift
 
-class GithubAPI {
+class GithubService {
     static func url(
         for query: String?,
         page: Int)
