@@ -1,5 +1,5 @@
 //
-//  UserSearchCell.swift
+//  UserTableViewCell.swift
 //  MyGithubUserSearch
 //
 //  Created by Jinwoo Kim on 06/05/2019.
@@ -12,7 +12,7 @@ import RxCocoa
 import RxDataSources
 import ReactorKit
 
-class UserSearchCell: UITableViewCell {
+class UserTableViewCell: UITableViewCell {
     
     var disposeBag: DisposeBag = DisposeBag()
     
@@ -24,12 +24,13 @@ class UserSearchCell: UITableViewCell {
     private let tapGestureByLabel: UITapGestureRecognizer = UITapGestureRecognizer()
     
     private lazy var profileImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.isUserInteractionEnabled = true
-        iv.addGestureRecognizer(tapGestureByImage)
-        return iv
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
+        imageView.layer.cornerRadius = Metric.profileImageSize.width / 2.0
+        imageView.addGestureRecognizer(self.tapGestureByImage)
+        return imageView
     }()
     
     private lazy var usernameLabel: UILabel = {
@@ -60,24 +61,30 @@ class UserSearchCell: UITableViewCell {
         return cell
     })
     
-    private lazy var containerCollectionView: UICollectionView = {
+    private lazy var organizationCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
-        cv.register(Reusable.organizationCell)
-        cv.alwaysBounceHorizontal = true
-        cv.showsHorizontalScrollIndicator = false
-        return cv
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.register(Reusable.organizationCell)
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.showsHorizontalScrollIndicator = false
+        return collectionView
     }()
     
-    // MARK:- Initializer
+    // MARK: - Initializing
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupCellSubviews()
-        setupContainerCollectionView()
+        self.initializeLayout()
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -89,46 +96,37 @@ class UserSearchCell: UITableViewCell {
         super.prepareForReuse()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK:- Setup layout methods
-    private func setupCellSubviews() {
-        let stackView =  UIStackView(arrangedSubviews: [usernameLabel, scoreLabel])
+    private func initializeLayout() {
+        let stackView =  UIStackView(arrangedSubviews: [
+            self.usernameLabel,
+            self.scoreLabel
+        ])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.spacing = Metric.contentSpacing
         
-        [profileImageView, stackView].forEach {
-            contentView.addSubview($0)
+        self.addSubviews([
+            self.profileImageView,
+            stackView,
+            self.organizationCollectionView
+        ])
+        
+        self.profileImageView.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
+            $0.size.equalTo(Metric.profileImageSize)
         }
         
-        profileImageView.anchor(top: contentView.topAnchor,
-                                leading: contentView.leadingAnchor,
-                                bottom: nil,
-                                trailing: nil,
-                                size: CGSize(width: Metric.profileImageSize, height: Metric.profileImageSize))
-        profileImageView.layer.cornerRadius = Metric.profileImageSize / 2
+        stackView.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview()
+            $0.leading.equalTo(self.profileImageView.snp.trailing).offset(Metric.profileSpacing)
+        }
         
-        stackView.anchor(top: contentView.topAnchor,
-                         leading: profileImageView.trailingAnchor,
-                         bottom: profileImageView.bottomAnchor,
-                         trailing: contentView.trailingAnchor,
-                         padding: UIEdgeInsets(top: 0, left: Metric.profileSpacing, bottom: 0, right: 0))
+        self.organizationCollectionView.snp.makeConstraints {
+            $0.top.equalTo(self.profileImageView.snp.bottom).offset(Metric.orgVerticalSpacing)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
-    private func setupContainerCollectionView() {
-        contentView.addSubview(containerCollectionView)
-        
-        containerCollectionView.anchor(top: profileImageView.bottomAnchor,
-                                       leading: contentView.leadingAnchor,
-                                       bottom: contentView.bottomAnchor,
-                                       trailing: contentView.trailingAnchor,
-                                       padding: UIEdgeInsets(top: Metric.orgVerticalSpacing, left: 0, bottom: 0, right: 0))
-    }
-    
-    // MARK:- Fillup cell with Reactor
     private func fillupCell(with reactor: UserSearchCellReactor) {
         let userItem: UserItem = reactor.currentState.userItem
         
@@ -140,12 +138,12 @@ class UserSearchCell: UITableViewCell {
     }
 }
 
-extension UserSearchCell: ReactorKit.View {
+extension UserTableViewCell: ReactorKit.View {
     func bind(reactor: UserSearchCellReactor) {
         self.fillupCell(with: reactor)
         
         // DataSource
-        containerCollectionView.rx.setDelegate(self)
+        organizationCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         // Action Binding
@@ -166,7 +164,7 @@ extension UserSearchCell: ReactorKit.View {
             .filter { $0.isEmpty == false }
             .map { [Organization(organizationItems: $0)] }
             .observeOn(MainScheduler.asyncInstance)
-            .bind(to: containerCollectionView.rx.items(dataSource: dataSource))
+            .bind(to: organizationCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         reactor.state
@@ -183,12 +181,10 @@ extension UserSearchCell: ReactorKit.View {
     }
 }
 
-extension UserSearchCell: UICollectionViewDelegateFlowLayout {
+extension UserTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return isTapped
-            ? CGSize(width: Metric.orgImageSize, height: Metric.orgImageSize)
-            : .zero
+        return isTapped ? Metric.orgImageSize : .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

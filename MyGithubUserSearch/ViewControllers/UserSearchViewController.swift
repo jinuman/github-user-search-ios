@@ -7,33 +7,33 @@
 //
 
 import UIKit
-import ReactorKit
+
+import SnapKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import ReactorKit
 
-class UserSearchViewController: UIViewController {
+class UserSearchViewController: UIViewController, View {
     
-    var disposeBag: DisposeBag = DisposeBag()
+    // MARK: - Properties
     
-    private var selectedIndexPaths = [IndexPath]()
-    
-    // MARK:- Sreen Properties
     private let userSearchBar: UISearchBar = {
-        let sb = UISearchBar(frame: .zero)
-        sb.searchBarStyle = .prominent
-        sb.placeholder = "Github 사용자를 검색해보세요.."
-        let textFieldInsideSearchBar = sb.value(forKey: "searchField") as? UITextField
+        let searchBar = UISearchBar(frame: .zero)
+        searchBar.searchBarStyle = .prominent
+        searchBar.placeholder = "Github 사용자를 검색해보세요.."
+        let textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.backgroundColor = UIColor(r: 240, g: 240, b: 240)
-        return sb
+        return searchBar
     }()
     
-    private let tableView: UITableView = {
-        let tv = UITableView(frame: .zero, style: .plain)
-        tv.separatorStyle = .none
-        tv.backgroundColor = .white
-        tv.allowsSelection = false
-        return tv
+    private let userTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .white
+        tableView.allowsSelection = false
+        tableView.register(Reusable.userSearchCell)
+        return tableView
     }()
     
     private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
@@ -48,56 +48,25 @@ class UserSearchViewController: UIViewController {
     
     private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
-    // MARK:- Life cycle methods
+    // MARK: General
+    
+    var disposeBag: DisposeBag = DisposeBag()
+    
+    private var selectedIndexPaths = [IndexPath]()
+    
+    
+    // MARK: - Life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        tableView.register(Reusable.userSearchCell)
-        
-        setupSubviews()
+        self.configureLayout()
     }
     
-    // MARK:- Layout methods
-    private func setupSubviews() {
-        guard let navBar = navigationController?.navigationBar else { return }
-        
-        navBar.addSubview(userSearchBar)
-        [tableView, spinner].forEach {
-            view.addSubview($0)
-        }
-        
-        userSearchBar.anchor(top: navBar.topAnchor,
-                             leading: navBar.leadingAnchor,
-                             bottom: navBar.bottomAnchor,
-                             trailing: navBar.trailingAnchor,
-                             padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
-        
-        tableView.fillSuperview()
-        
-        spinner.centerInSuperview()
-    }
+    // MARK: - Binding
     
-    // MARK:- Helper method
-    // When tapped event came from cell
-    private func didTapCellItem(isExpanded: Bool, cell: UITableViewCell) {
-        
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        if isExpanded {
-            selectedIndexPaths.append(indexPath)
-        } else {
-            guard let idx = selectedIndexPaths.firstIndex(of: indexPath) else { return }
-            selectedIndexPaths.remove(at: Int(idx))
-        }
-        tableView.reloadData()
-//        print("## selectedIndexPath: \(selectedIndexPaths)")
-    }
-    
-}
-
-extension UserSearchViewController: ReactorKit.View {
     func bind(reactor: UserSearchReactor) {
         // DataSource
-        tableView.rx.setDelegate(self)
+        userTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         // Action binding: View -> Reactor(Action)
@@ -108,14 +77,14 @@ extension UserSearchViewController: ReactorKit.View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        tableView.rx.contentOffset
+        userTableView.rx.contentOffset
             .filter { [weak self] (offset) -> Bool in
                 guard let self = self else { return false }
                 
                 let scrollPosition: CGFloat = offset.y
-                let contentHeight: CGFloat = self.tableView.contentSize.height
+                let contentHeight: CGFloat = self.userTableView.contentSize.height
                 
-                return scrollPosition > contentHeight - self.tableView.bounds.height
+                return scrollPosition > contentHeight - self.userTableView.bounds.height
             }
             .map { _ in Reactor.Action.loadNextPage }
             .bind(to: reactor.action)
@@ -126,7 +95,7 @@ extension UserSearchViewController: ReactorKit.View {
             .map { $0.userItems }
             .map { [User(userItems: $0)] }
             .observeOn(MainScheduler.asyncInstance)
-            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .bind(to: userTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         reactor.state
@@ -138,11 +107,11 @@ extension UserSearchViewController: ReactorKit.View {
         // Scroll to top if previous search text was scrolled
         userSearchBar.rx.text
             .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
-            .withLatestFrom(tableView.rx.contentOffset)
+            .withLatestFrom(userTableView.rx.contentOffset)
             .filter { $0.y > 0 }
             .subscribe({ [weak self] _ in
                 guard let self = self else { return }
-                self.tableView.contentOffset.y = 0
+                self.userTableView.contentOffset.y = 0
             })
             .disposed(by: disposeBag)
         
@@ -155,15 +124,56 @@ extension UserSearchViewController: ReactorKit.View {
             })
             .disposed(by: disposeBag)
     }
+    
+    // MARK: - Methods
+    
+    private func configureLayout() {
+        self.view.backgroundColor = .white
+        
+        self.navigationController?.navigationBar.addSubview(self.userSearchBar)
+        
+        self.view.addSubviews([
+            self.userTableView,
+            self.spinner
+        ])
+        
+        self.userSearchBar.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.top.bottom.equalToSuperview()
+        }
+        
+        self.userTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(10)
+        }
+        
+        self.spinner.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
+    // When tapped event came from cell
+    private func didTapCellItem(isExpanded: Bool, cell: UITableViewCell) {
+        
+        guard let indexPath = self.userTableView.indexPath(for: cell) else { return }
+        if isExpanded {
+            self.selectedIndexPaths.append(indexPath)
+        } else {
+            guard let idx = self.selectedIndexPaths.firstIndex(of: indexPath) else { return }
+            self.selectedIndexPaths.remove(at: Int(idx))
+        }
+        self.userTableView.reloadData()
+    }
+    
 }
 
-// MARK:- Regarding tableView delegate
+// MARK: - Extensions
+
 extension UserSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         let height: CGFloat = selectedIndexPaths.contains(indexPath)
-            ? Metric.profileImageSize + Metric.edgeInset + Metric.orgImageSize + Metric.orgVerticalSpacing
-            : Metric.profileImageSize + Metric.edgeInset + Metric.orgVerticalSpacing
+        ? Metric.profileImageSize.width + Metric.edgeInset + Metric.orgImageSize.width + Metric.orgVerticalSpacing
+        : Metric.profileImageSize.width + Metric.edgeInset + Metric.orgVerticalSpacing
         
         return height
     }
