@@ -9,14 +9,18 @@
 import Foundation
 import RxDataSources
 
-extension SearchResult: SectionModelType {
+extension UserSectionModel: SectionModelType {
     
     typealias Item = UserInfo
     
-    init(original: SearchResult, items: [Item]) {
+    init(original: UserSectionModel, items: [Item]) {
         self = original
         self.items = items
     }
+}
+
+struct UserSectionModel {
+    var items: [Item]
 }
 
 struct SearchResult: Decodable {

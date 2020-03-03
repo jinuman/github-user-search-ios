@@ -13,8 +13,6 @@ import RxCocoa
 
 class UserSearchReactor: Reactor {
     
-    let initialState: State = State()
-    
     enum Action {
         case updateQuery(String?)
         case loadNextPage
@@ -29,10 +27,16 @@ class UserSearchReactor: Reactor {
     
     struct State {
         var query: String?
-        var userItems = [UserInfo]()
+        var items: [UserInfo] = []
         var nextPage: Int?
         var isLoading: Bool = false
     }
+    
+    // MARK: - Properties
+    
+    let initialState: State = State()
+    
+    // MARK: - Methods
     
     func mutate(action: UserSearchReactor.Action) -> Observable<UserSearchReactor.Mutation> {
         switch action {
@@ -73,13 +77,13 @@ class UserSearchReactor: Reactor {
             
         case let .setUsers(users, nextPage):
             var newState = state
-            newState.userItems = users
+            newState.items = users
             newState.nextPage = nextPage
             return newState
             
         case let .appendUsers(users, nextPage):
             var newState = state
-            newState.userItems.append(contentsOf: users)
+            newState.items.append(contentsOf: users)
             newState.nextPage = nextPage
             return newState
             

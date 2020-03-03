@@ -36,7 +36,7 @@ class UserSearchViewController: UIViewController, View {
         return tableView
     }()
     
-    private typealias UserDataSource = RxTableViewSectionedReloadDataSource<SearchResult>
+    private typealias UserDataSource = RxTableViewSectionedReloadDataSource<UserSectionModel>
     
     private lazy var dataSource = UserDataSource(
         configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
@@ -46,7 +46,7 @@ class UserSearchViewController: UIViewController, View {
             return cell
     })
     
-    private let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
+    private let activityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     // MARK: General
     
@@ -60,69 +60,45 @@ class UserSearchViewController: UIViewController, View {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureLayout()
+        self.addActions()
     }
     
     // MARK: - Binding
     
     func bind(reactor: UserSearchReactor) {
-        // DataSource
-        userTableView.rx.setDelegate(self)
-            .disposed(by: disposeBag)
         
         // Action binding: View -> Reactor(Action)
-        userSearchBar.rx.text
+        
+        self.userSearchBar.rx.text
             .distinctUntilChanged()
             .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .map { Reactor.Action.updateQuery($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        userTableView.rx.contentOffset
-            .filter { [weak self] (offset) -> Bool in
-                guard let self = self else { return false }
+        self.userTableView.rx.contentOffset
+            .filter { [weak self] offset -> Bool in
+                guard let `self` = self else { return false }
                 
                 let scrollPosition: CGFloat = offset.y
                 let contentHeight: CGFloat = self.userTableView.contentSize.height
                 
-                return scrollPosition > contentHeight - self.userTableView.bounds.height
-            }
+                return scrollPosition > contentHeight - self.userTableView.bounds.height }
             .map { _ in Reactor.Action.loadNextPage }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         // State binding: Reactor(State) -> View
-        reactor.state
-            .map { $0.userItems }
-            .map { [SearchResult(items: $0)] }
-            .observeOn(MainScheduler.asyncInstance)
-            .bind(to: userTableView.rx.items(dataSource: dataSource))
+        
+        reactor.state.map { $0.items }
+            .map { [UserSectionModel(items: $0)] }
+            .bind(to: self.userTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        reactor.state
-            .map { $0.isLoading }
-            .bind(to: spinner.rx.isAnimating)
+        reactor.state.map { $0.isLoading }
+            .bind(to: self.activityIndicatorView.rx.isAnimating)
             .disposed(by: disposeBag)
         
-        // Misc.
-        // Scroll to top if previous search text was scrolled
-        userSearchBar.rx.text
-            .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
-            .withLatestFrom(userTableView.rx.contentOffset)
-            .filter { $0.y > 0 }
-            .subscribe({ [weak self] _ in
-                guard let self = self else { return }
-                self.userTableView.contentOffset.y = 0
-            })
-            .disposed(by: disposeBag)
-        
-        // Reset selectedIndexPaths when search bar text change
-        userSearchBar.rx.text
-            .debounce(DispatchTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
-            .subscribe({ [weak self] _ in
-                guard let self = self else { return }
-                self.selectedIndexPaths = []
-            })
-            .disposed(by: disposeBag)
     }
     
     // MARK: - Methods
@@ -134,7 +110,7 @@ class UserSearchViewController: UIViewController, View {
         
         self.view.addSubviews([
             self.userTableView,
-            self.spinner
+            self.activityIndicatorView
         ])
         
         self.userSearchBar.snp.makeConstraints {
@@ -146,9 +122,36 @@ class UserSearchViewController: UIViewController, View {
             $0.edges.equalToSuperview()
         }
         
-        self.spinner.snp.makeConstraints {
+        self.activityIndicatorView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+    
+    private func addActions() {
+        
+        self.userTableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        // Scroll to top if previous search text was scrolled
+        self.userSearchBar.rx.text
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .withLatestFrom(self.userTableView.rx.contentOffset)
+            .filter { $0.y > 0 }
+            .subscribe({ [weak self] _ in
+                guard let `self` = self else { return }
+                self.userTableView.contentOffset.y = 0
+            })
+            .disposed(by: disposeBag)
+        
+        // Reset selectedIndexPaths when search bar text change
+        self.userSearchBar.rx.text
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe({ [weak self] _ in
+                guard let `self` = self else { return }
+                self.selectedIndexPaths = []
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     // When tapped event came from cell
