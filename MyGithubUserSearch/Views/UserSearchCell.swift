@@ -11,7 +11,6 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import ReactorKit
-import Kingfisher
 
 class UserSearchCell: UITableViewCell {
     
@@ -55,7 +54,8 @@ class UserSearchCell: UITableViewCell {
         let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
         
         if let url = URL(string: item.organizationImageUrl) {
-            cell.organizationImageView.kf.setImage(with: url)
+            
+            cell.organizationImageView.setImage(with: url)
         }
         return cell
     })
@@ -133,10 +133,10 @@ class UserSearchCell: UITableViewCell {
         let userItem: UserItem = reactor.currentState.userItem
         
         guard let profileImageUrl = URL(string: userItem.profileImageUrl) else { return }
-        profileImageView.kf.setImage(with: profileImageUrl)
-        usernameLabel.text = userItem.username
+        self.profileImageView.setImage(with: profileImageUrl)
+        self.usernameLabel.text = userItem.username
         let scoreText: String = "score: \(userItem.score.description)"
-        scoreLabel.text = scoreText
+        self.scoreLabel.text = scoreText
     }
 }
 

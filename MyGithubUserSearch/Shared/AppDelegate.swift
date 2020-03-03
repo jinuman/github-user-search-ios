@@ -10,8 +10,6 @@ import UIKit
 
 import SwiftyBeaver
 
-let log = SwiftyBeaver.self
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -24,17 +22,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         log.addDestination(ConsoleDestination())
         
-        // MARK: Set Window
         let window = UIWindow(frame: UIScreen.main.bounds)
         
         let userSearchViewController = UserSearchViewController()
         userSearchViewController.reactor = UserSearchReactor()
         
         let navigationController = UINavigationController(
-            rootViewController: userSearchViewController)
+            rootViewController: userSearchViewController
+        )
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
+        
         self.window = window
         
         return true

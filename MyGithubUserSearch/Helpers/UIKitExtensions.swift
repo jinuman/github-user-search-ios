@@ -1,5 +1,5 @@
 //
-//  UIKit+MyGithubUserSearch.swift
+//  UIKitExtensions.swift
 //  MyGithubUserSearch
 //
 //  Created by Jinwoo Kim on 06/05/2019.
