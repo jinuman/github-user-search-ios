@@ -36,7 +36,7 @@ class UserSearchViewController: UIViewController, View {
         return tableView
     }()
     
-    private typealias UserDataSource = RxTableViewSectionedReloadDataSource<User>
+    private typealias UserDataSource = RxTableViewSectionedReloadDataSource<SearchResult>
     
     private lazy var dataSource = UserDataSource(
         configureCell: { (dataSource, tableView, indexPath, userItem) -> UITableViewCell in
@@ -93,7 +93,7 @@ class UserSearchViewController: UIViewController, View {
         // State binding: Reactor(State) -> View
         reactor.state
             .map { $0.userItems }
-            .map { [User(userItems: $0)] }
+            .map { [SearchResult(items: $0)] }
             .observeOn(MainScheduler.asyncInstance)
             .bind(to: userTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)

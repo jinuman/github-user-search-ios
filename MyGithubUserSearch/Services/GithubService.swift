@@ -25,9 +25,9 @@ class GithubService {
     static func fetchUsers(
         with query: String?,
         page: Int)
-        -> Observable<(repos: [UserItem], nextPage: Int?)>
+        -> Observable<(repos: [UserInfo], nextPage: Int?)>
     {
-        let emptyResult: ([UserItem], Int?) = ([], nil)
+        let emptyResult: ([UserInfo], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
         log.debug("Current URL: \(url.absoluteString)")
         
@@ -55,12 +55,12 @@ class GithubService {
                 guard let data = data else { return }
                 
                 do {
-                    let user = try JSONDecoder().decode(User.self, from: data)
-                    let nextPage = user.userItems.isEmpty
+                    let user = try JSONDecoder().decode(SearchResult.self, from: data)
+                    let nextPage = user.items.isEmpty
                         ? nil
                         : page + 1
-                    print("userItems: \(user.userItems.count), nextPage: \(nextPage ?? -1)")
-                    observer.onNext((user.userItems, nextPage))
+                    print("userItems: \(user.items.count), nextPage: \(nextPage ?? -1)")
+                    observer.onNext((user.items, nextPage))
                     
                 } catch let jsonError {
                     observer.onError(jsonError)

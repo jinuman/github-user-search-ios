@@ -134,7 +134,7 @@ class UserTableViewCell: UITableViewCell {
     }
     
     private func fillupCell(with reactor: UserCellReactor) {
-        let userItem: UserItem = reactor.currentState.userItem
+        let userItem: UserInfo = reactor.currentState.userItem
         
         guard let profileImageUrl = URL(string: userItem.profileImageUrl) else { return }
         self.profileImageView.setImage(with: profileImageUrl)

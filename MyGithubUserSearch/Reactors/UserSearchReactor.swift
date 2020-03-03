@@ -22,14 +22,14 @@ class UserSearchReactor: Reactor {
     
     enum Mutation {
         case setQuery(String?)
-        case setUsers([UserItem], nextPage: Int?)
-        case appendUsers([UserItem], nextPage: Int?)
+        case setUsers([UserInfo], nextPage: Int?)
+        case appendUsers([UserInfo], nextPage: Int?)
         case setLoading(Bool)
     }
     
     struct State {
         var query: String?
-        var userItems = [UserItem]()
+        var userItems = [UserInfo]()
         var nextPage: Int?
         var isLoading: Bool = false
     }

@@ -15,7 +15,7 @@ class UserCellReactor: Reactor {
     
     let initialState: State
     
-    init(userItem: UserItem) {
+    init(userItem: UserInfo) {
         self.initialState = State(userItem: userItem)
     }
     
@@ -29,11 +29,11 @@ class UserCellReactor: Reactor {
     }
     
     struct State {
-        let userItem: UserItem
+        let userItem: UserInfo
         var organizationItems: [OrganizationItem]
         var isTapped: Bool = false
         
-        init(userItem: UserItem, organizationItems: [OrganizationItem] = [], isTapped: Bool = false) {
+        init(userItem: UserInfo, organizationItems: [OrganizationItem] = [], isTapped: Bool = false) {
             self.userItem = userItem
             self.organizationItems = organizationItems
             self.isTapped = isTapped

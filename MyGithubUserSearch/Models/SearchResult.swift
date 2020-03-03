@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  SearchResult.swift
 //  MyGithubUserSearch
 //
 //  Created by Jinwoo Kim on 06/05/2019.
@@ -9,26 +9,21 @@
 import Foundation
 import RxDataSources
 
-struct User: Decodable {
-    var userItems: [UserItem]
+extension SearchResult: SectionModelType {
     
-    enum CodingKeys: String, CodingKey {
-        case userItems = "items"
-    }
-}
-
-extension User: SectionModelType {
-    var items: [UserItem] {
-        return self.userItems
-    }
+    typealias Item = UserInfo
     
-    init(original: User, items: [UserItem]) {
+    init(original: SearchResult, items: [Item]) {
         self = original
-        self.userItems = items
+        self.items = items
     }
 }
 
-struct UserItem: Decodable {
+struct SearchResult: Decodable {
+    var items: [UserInfo]
+}
+
+struct UserInfo: Decodable {
     let username: String
     let score: Double
     let profileImageUrl: String
