@@ -191,7 +191,6 @@ class UserTableViewCell: UITableViewCell, View {
         guard let profileImageUrl = URL(string: userInfo.profileImageUrl) else { return }
         
         #warning("뭔가 개선이 필요하다..너무 많이 불린다.")
-        log.debugPrint(profileImageUrl)
         self.profileImageView.setImage(with: profileImageUrl)
         self.usernameLabel.text = userInfo.username
         let scoreText: String = "score: \(userInfo.score.description)"

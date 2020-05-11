@@ -27,7 +27,7 @@ class UserSearchReactor: Reactor {
     
     struct State {
         var query: String?
-        var items: [UserInfo] = []
+        var sectionModelItems: [UserInfo] = []
         var nextPage: Int?
         var isLoading: Bool = false
     }
@@ -79,10 +79,10 @@ class UserSearchReactor: Reactor {
         case .setQuery(let query):
             newState.query = query
         case let .setUsers(users, nextPage):
-            newState.items = users
+            newState.sectionModelItems = users
             newState.nextPage = nextPage
         case let .appendUsers(users, nextPage):
-            newState.items.append(contentsOf: users)
+            newState.sectionModelItems.append(contentsOf: users)
             newState.nextPage = nextPage
         case .setLoading(let isLoading):
             newState.isLoading = isLoading

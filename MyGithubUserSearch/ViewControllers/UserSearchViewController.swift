@@ -20,7 +20,7 @@ class UserSearchViewController: UIViewController, View {
     
     private let userSearchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
-        searchBar.searchBarStyle = .prominent
+        searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Github 사용자를 검색해보세요.."
         let textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.backgroundColor = UIColor(r: 240, g: 240, b: 240)
@@ -70,7 +70,7 @@ class UserSearchViewController: UIViewController, View {
         
         self.userSearchBar.rx.text
             .distinctUntilChanged()
-            .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .debounce(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .map { Reactor.Action.updateQuery($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -89,7 +89,7 @@ class UserSearchViewController: UIViewController, View {
         
         // State binding: Reactor(State) -> View
         
-        reactor.state.map { $0.items }
+        reactor.state.map { $0.sectionModelItems }
             .map { [UserSectionModel(items: $0)] }
             .bind(to: self.userTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
