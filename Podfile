@@ -8,34 +8,33 @@ target 'MyGithubUserSearch' do
   # Pods for MyGithubUserSearch
 
   # Network
-  pod 'Moya'
+  pod 'Moya', '~> 14.0.0'
 
   # Auto-layout
-  pod 'SnapKit'
+  pod 'SnapKit', '~> 5.0.1'
 
   # Image
-  pod 'Nuke'
+  pod 'Nuke', '~> 8.4.1'
   
   # Rx
-  pod 'ReactorKit'
-  pod 'RxSwift'
-  pod 'RxCocoa'
-  pod 'RxDataSources'
-  pod 'RxGesture'
-  pod 'RxSwiftExt'
+  pod 'ReactorKit', '~> 2.1.0'
+  pod 'RxSwift', '~> 5.1.0'
+  pod 'RxCocoa', '~> 5.1.0'
+  pod 'RxDataSources', '~> 4.0.1'
+  pod 'RxGesture', '~> 3.0.0'
+  pod 'RxSwiftExt', '~> 5.2.0'
 
-  # Logging
-  pod 'SwiftyBeaver'
+  # Convenient Logging
+  pod 'SwiftyBeaver', '~> 1.9.1'
   
   # Etc
-  pod 'ReusableKit'
 
   target 'MyGithubUserSearchTests' do
     inherit! :search_paths
     # Pods for testing
 
-    pod 'Nimble'
-    pod 'RxExpect'
+    pod 'Nimble', '~> 8.0.7'
+    pod 'RxExpect', '~> 2.0.0'
     
   end
 
