@@ -8,7 +8,7 @@
 
 import SwiftyBeaver
 
-let log = SwiftyBeaver.self
+let logger = SwiftyBeaver.self
 
 extension SwiftyBeaver {
     
@@ -18,7 +18,7 @@ extension SwiftyBeaver {
      - ex) log.debugPrint("Function called", .verbose)
      */
     
-    class func debugPrint(
+    static func debugPrint(
         _ message: @autoclosure () -> Any,
         _ file: String = #file,
         _ function: String = #function,
@@ -29,18 +29,19 @@ extension SwiftyBeaver {
         #if DEBUG
         switch level {
         case .verbose:
-            log.verbose(message(), file, function, line: line, context: context)
+            logger.verbose(message(), file, function, line: line, context: context)
         case .debug:
-            log.debug(message(), file, function, line: line, context: context)
+            logger.debug(message(), file, function, line: line, context: context)
         case .info:
-            log.info(message(), file, function, line: line, context: context)
+            logger.info(message(), file, function, line: line, context: context)
         case .warning:
-            log.warning(message(), file, function, line: line, context: context)
+            logger.warning(message(), file, function, line: line, context: context)
         default:
-            log.error(message(), file, function, line: line, context: context)
+            logger.error(message(), file, function, line: line, context: context)
         }
         #endif
     }
     
 }
+
 
