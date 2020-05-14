@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
         -> Bool
     {
-        log.addDestination(ConsoleDestination())
+        logger.addDestination(ConsoleDestination())
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         

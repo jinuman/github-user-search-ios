@@ -44,13 +44,13 @@ class GithubService {
     {
         let emptyResult: ([UserInfo], Int?) = ([], nil)
         guard let url = self.url(for: query, page: page) else { return .just(emptyResult) }
-        log.debug("Current URL: \(url.absoluteString)")
+        logger.debug("Current URL: \(url.absoluteString)")
         
         return Observable.create { observer in
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 
                 if let error = error {
-                    log.error("session error: \(error.localizedDescription)")
+                    logger.error("session error: \(error.localizedDescription)")
                     observer.onError(error)
                     return
                 }
@@ -58,9 +58,9 @@ class GithubService {
                 if let statusCode = (response as? HTTPURLResponse)?.statusCode,
                     (statusCode < 200 || statusCode > 300)
                 {
-                    log.error("Server returned an error")
+                    logger.error("Server returned an error")
                     if statusCode == 403 {
-                        log.error(GithubServiceError.limitExeededError.errorMessage)
+                        logger.error(GithubServiceError.limitExeededError.errorMessage)
                         observer.onError(GithubServiceError.limitExeededError)
                     }
                     observer.onError(GithubServiceError.responseError)

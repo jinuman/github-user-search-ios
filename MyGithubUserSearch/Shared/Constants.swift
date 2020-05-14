@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ReusableKit
 
 struct Metric {
     static let profileImageSize: CGSize = CGSize(width: 50, height: 50)
@@ -19,9 +18,4 @@ struct Metric {
     static let orgBorderWidth: CGFloat = 0.5
     static let orgVerticalSpacing: CGFloat = 3
     static let orgItemSpacing: CGFloat = 5
-}
-
-enum Reusable {
-    static let userSearchCell = ReusableCell<UserTableViewCell>()
-    static let organizationCell = ReusableCell<OrganizationCell>()
 }

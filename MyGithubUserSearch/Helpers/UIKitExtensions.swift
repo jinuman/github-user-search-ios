@@ -32,6 +32,28 @@ extension UIView {
     }
 }
 
+extension UIScrollView {
+    
+    func isNearBottomEdge(edgeOffset: CGFloat = 20.0) -> Bool {
+        guard self.frame.size.height > 0
+            && self.contentSize.height > 0 else { return false }
+        
+        return self.contentOffset.y
+            + self.frame.size.height
+            + edgeOffset
+            > self.contentSize.height
+    }
+    
+    func scrollToTop(animated: Bool = true) {
+        let topInset = self.contentInset.top
+        self.setContentOffset(
+            CGPoint(x: 0, y: -topInset),
+            animated: animated
+        )
+    }
+    
+}
+
 extension UITableView {
     
     func setContentInsetWithScrollIndicatorsInset(contentInset: UIEdgeInsets) {

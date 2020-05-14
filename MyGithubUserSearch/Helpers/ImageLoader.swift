@@ -80,7 +80,7 @@ extension UIImageView {
                 case let .success(image):
                     self.image = image
                 case let .failure(error):
-                    log.debugPrint(error, level: .error)
+                    logger.debugPrint(error, level: .error)
                     self.image = placeholder
                 }
             }
@@ -99,7 +99,7 @@ extension UIImageView {
                 case let .success(image):
                     self.image = image
                 case let .failure(error):
-                    log.debugPrint(error, level: .error)
+                    logger.debugPrint(error, level: .error)
                     self.image = placeholder
                 }
             }

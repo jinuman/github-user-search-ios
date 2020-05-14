@@ -32,7 +32,7 @@ class UserSearchViewController: UIViewController, View {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .white
         tableView.allowsSelection = false
-        tableView.register(Reusable.userSearchCell)
+        tableView.register([UserTableViewCell.self])
         return tableView
     }()
     
@@ -40,7 +40,10 @@ class UserSearchViewController: UIViewController, View {
     
     private lazy var dataSource = UserDataSource(
         configureCell: { (dataSource, tableView, indexPath, item) -> UITableViewCell in
-            let cell = tableView.dequeue(Reusable.userSearchCell, for: indexPath)
+            let cell = tableView.dequeueReusableCell(
+                cellType: UserTableViewCell.self,
+                for: indexPath
+            )
             cell.reactor = UserCellReactor(userInfo: item)
             cell.didTapCellItem = self.didTapCellItem
             return cell

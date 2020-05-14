@@ -52,10 +52,11 @@ class UserTableViewCell: UITableViewCell, View {
     typealias OrganizationDataSource = RxCollectionViewSectionedReloadDataSource<OrganizationSectionModel>
     
     private let dataSource = OrganizationDataSource(configureCell: { (dataSource, collectionView, indexPath, item) -> UICollectionViewCell in
-        let cell = collectionView.dequeue(Reusable.organizationCell, for: indexPath)
-        
+        let cell = collectionView.dequeueReusableCell(
+            cellType: OrganizationCell.self,
+            for: indexPath
+        )
         if let url = URL(string: item.organizationImageUrl) {
-            
             cell.organizationImageView.setImage(with: url)
         }
         return cell
@@ -66,7 +67,7 @@ class UserTableViewCell: UITableViewCell, View {
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
-        collectionView.register(Reusable.organizationCell)
+        collectionView.register([OrganizationCell.self])
         collectionView.alwaysBounceHorizontal = true
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
